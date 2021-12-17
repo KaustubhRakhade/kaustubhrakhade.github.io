@@ -44,9 +44,7 @@ function collatz(start, multiplier, offset, maxsteps) {
     let next = dostep(start, multiplier, offset)
     let steps = 1;
     seq.push({"num": next, "step": steps})
-    console.log(next, start)
     while (!(checkIfLoops(seq) || steps > maxsteps)) {
-        console.log(seq)
         next = dostep(next, multiplier, offset)
         steps++
         seq.push({"num": next, "step": steps})
@@ -65,6 +63,5 @@ function checkIfLoops(seq) {
 }
 
 self.addEventListener('message', function(e) {
-    console.log(e.data)
     postMessage(collatz(e.data.start, e.data.multiplier, e.data.offset, e.data.maxsteps))
 }, false)

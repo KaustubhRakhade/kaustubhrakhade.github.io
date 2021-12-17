@@ -1,3 +1,5 @@
+var message = ''
+
 function formatnumber(n) {
   var s = '00000' + n.toString();
   return s.substr(s.length - 6, 6);
@@ -60,7 +62,6 @@ function getnumber(rawnumberstr) {
   }
   while (numberstr.length > 0 && numberstr.substr(0, 1) == "0")
     numberstr = numberstr.substring(1);
-  console.log((numberstr == "") ? 0 : numberstr);
   return((numberstr == "") ? 0 : numberstr);
 }
 
@@ -78,13 +79,10 @@ function strtonumber(numstr) {
   if (numstr.length > 0) {
     num.push(sign*parseInt(numstr)); 
   }
-  console.log(num)
   return num;
 }
 
 function buildTable(seq) {
-  
-    console.log('BUILDING!!!')
     let table = document.createElement('table')
     let lastElem = JSON.stringify(seq[seq.length-1].num)
     var loopStart = false
@@ -111,12 +109,11 @@ function buildTable(seq) {
     grab("#binaryStyle").innerHTML = `.bin { display: ${show ? 'table-cell' : 'none'} !important }`
     grab('#calculateBTN').value = 'Calculate'
     grab('#calculateBTN').disabled = false;
+    console.timeEnd(message)
 }
 
 function renderChart(seq, loopPoint) {
   let ctx = document.createElement('canvas')
-  grab('#chart').innerHTML = '';
-  grab('#chart').append(ctx)
   let xData = [];
   let yData = [];
   let loopData = [];
@@ -141,7 +138,6 @@ function renderChart(seq, loopPoint) {
       loopJoin.push(null)
     }
   }
-  console.log(loopData,loopJoin)
   let data = {
     labels: xData,
     datasets: [{
@@ -174,13 +170,10 @@ function renderChart(seq, loopPoint) {
   }
   let myChart = new Chart(ctx, {
     type: 'line',
-    data: data,
-  });
-  myChart = new Chart(ctx, {
-    type: 'line',
     data: data
   });
-  console.log(myChart)
+  grab('#chart').innerHTML = '';
+  grab('#chart').appendChild(ctx)
 }
 
 function calculate() {
@@ -188,7 +181,12 @@ function calculate() {
     let start = strtonumber(getnumber(grab('#startNum').value))
     let multiplier = parseInt(getnumber(grab('#multiplier').value))
     let maxsteps = parseInt(getnumber(grab('#maxsteps').value))
-    w.postMessage({'start':start,'multiplier':multiplier,'offset':offset,'maxsteps':maxsteps})
+    message = `Start: ${getnumber(grab('#startNum').value)}
+Format: ${multiplier}n${(Math.sign(offset) == 1) ? '+':''}${offset}
+Max Steps: ${maxsteps}
+Time Taken`;
+    console.time(message)
+    w.postMessage({'start':start,'multiplier':multiplier,'offset':offset,'maxsteps':maxsteps}) 
 }
 
 grab = (query) => {return document.querySelector(query)} 

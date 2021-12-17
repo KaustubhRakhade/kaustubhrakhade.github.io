@@ -1,6 +1,11 @@
 
 body {
     font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100vw;
+    margin: 0;
 }
 
 #form {
@@ -95,4 +100,8 @@ input[type=text], #maxsteps {
 
 #form td span {
     margin: 0 0.2rem;
+}
+
+#chart {
+    width: min(100%, 40rem);
 }
