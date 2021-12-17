@@ -1,0 +1,98 @@
+
+body {
+    font-family: sans-serif;
+}
+
+#form {
+    width: min(20rem, calc(100vw - 2rem));
+}
+
+input[type=text], input[type=number] {
+    outline: none;
+    border: solid lightgray;
+    border-width: 0 0 3px 0;
+    margin: 0;
+    padding: 0.2rem 0.5rem 0.1rem 0.5rem;
+    text-align: right;
+    transition: 0.25s all;
+}
+
+input[type=text]:hover, input[type=number]:hover {
+    border-color: rgb(184, 228, 255);
+    background-color: rgb(232, 247, 255);
+}
+
+input[type=text]:focus, input[type=number]:focus {
+    border-color: rgb(0, 181, 253);
+    background-color: rgb(215, 240, 255);
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+table {
+    border-collapse: collapse;
+    max-height: 2rem !important;
+    overflow: scroll;
+}
+
+td, th {
+    border: solid black 1px;
+    text-align: right;
+    font-size: 0.9rem;
+    padding: 0.1rem 0.25rem;
+}
+
+.loopTD {
+    border-left: solid blue 4px;
+}
+
+th {
+    text-align: center;
+    background-color: blue;
+    color: white;
+    padding: 0.25rem 0.5rem;
+}
+
+#form td {
+    border: none;
+    font-size: 1rem;
+    padding: 0.25rem 0.5rem;
+    display: table-cell;
+}
+#form tr td:nth-child(2) {
+    text-align: left;
+    display: inline-flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    justify-items: center;
+}
+
+input[type=text], #maxsteps {
+    width: calc(100% - 1rem);
+}
+
+#calculateBTN {
+    padding: 0.25rem 0.5rem;
+    height: 100%;
+    border: none;
+    background: #00b5fd;
+    user-select: auto;
+    color: #e8f7ff;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor:pointer;
+}
+
+#calculateBTN:disabled {
+    background: #fb6262;
+    cursor: not-allowed;
+}
+
+#form td span {
+    margin: 0 0.2rem;
+}
