@@ -1,67 +1,27 @@
-function dostep(number, multiplier, offset) {
-    var limit = 1000000;
-    num = JSON.parse(JSON.stringify(number));
-    sign = Math.sign(num[num.length - 1])
-    if (num[0] % 2 == 0) {
-        // first regroup to make all elements even
-        for (var i = 1; i < num.length; i++) {
-            if (num[i] % 2 == sign) {
-                num[i] -= sign;
-                num[i - 1] += sign*limit;
-            }
-        }
-        // now divide
-        for (var i = 0; i < num.length; i++) {
-            num[i] /= 2;
-        }
-        if (num[num.length - 1] == 0) {  // remove largest element
-            num.pop();
-        }
-    }
-    else {
-        // multiply all elements
-        for (var i = 0; i < num.length; i++) {
-            num[i] *=  multiplier;
-        }
-        num[0] += offset;
-        // now regroup
-        num.push(0);
-        for (var i = 0; i < num.length - 1; i++) {
-            let sign = Math.sign(num[i])
-            num[i+1] += sign*Math.floor(num[i] / (limit*sign));
-            num[i] %= limit;
-        }
-        if (num[num.length - 1] == 0) {  // remove largest element
-            num.pop();
-        }
-    }
-    return num;
+function dostep(num, multiplier, offset) {
+    return (num % 2n == 0) ? num / 2n : (multiplier * num) + offset
 }
-
 
 function collatz(start, multiplier, offset, maxsteps) {
-    let seq = [{"num": start, "step": 0}]
+    let seq = new Array(maxsteps + 1n).fill(null);
+    seq[0] = start
     let next = dostep(start, multiplier, offset)
-    let steps = 1;
-    seq.push({"num": next, "step": steps})
-    while (!(checkIfLoops(seq) || steps > maxsteps)) {
+    seq[1] = next
+    for (let i = 2; i < maxsteps + 1n; i++) {
         next = dostep(next, multiplier, offset)
-        steps++
-        seq.push({"num": next, "step": steps})
-    }
-    return(seq)
-}
-
-function checkIfLoops(seq) {
-    let lastElem = JSON.stringify(seq[seq.length-1].num)
-    for (i=0; i<seq.length - 1; i++) {
-        if (lastElem == JSON.stringify(seq[i].num)) {
-            return true
+        seq[i] = next
+        if (checkIfLoops(seq, i, next)) {
+            return seq.slice(0, i + 1)
         }
     }
-    return false
+    return seq
 }
 
-self.addEventListener('message', function(e) {
-    postMessage(collatz(e.data.start, e.data.multiplier, e.data.offset, e.data.maxsteps))
+function checkIfLoops(seq, i, next) {
+    return seq.slice(0, i).includes(next);
+}
+
+self.addEventListener('message', function (e) {
+    let seq = collatz(e.data.startNum, e.data.multiplier, e.data.offset, e.data.maxsteps)
+    postMessage({ 'seq': seq, 'base': e.data.base })
 }, false)

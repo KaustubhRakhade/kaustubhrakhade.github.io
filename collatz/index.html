@@ -1,43 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Collatz Calculator</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        w = new Worker("worker.js");
-        w.onmessage = function(event){ buildTable(event.data); };
-    </script>
+    <!-- <script src="chart.js"></script> -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
+    <h1>Collatz Calculator</h1>
     <table id="form">
         <tr colspan='2' class="formRow">
             <td><label for="startNum">Number:</label></td>
-            <td><input type='text' id='startNum' value="7"></td>
+            <td><input type='number' id='startNum' value="7"></td>
         </tr>
         <tr class="formRow">
             <td><label for="multiplier">Format:</label></td>
             <td><input type='number' id='multiplier' value="3" max="100" min="-100">
-            <span>n +</span> 
-            <input type='number' id='offset' value="1" max="100" min="-100"></td>
+                <span>n +</span>
+                <input type='number' id='offset' value="1" max="100" min="-100">
+            </td>
         </tr>
         <tr class="formRow">
             <td><label for='maxsteps'>Max Steps:</label></td>
             <td><input type='number' id='maxsteps' value="10000"></td>
         </tr>
         <tr class="formRow">
-            <td><input type='checkbox' id='showBin'></td>
-            <td><label for="showBin">Show Binary</label><input type="button" id="calculateBTN" value="Calculate"></td>
+            <td><label for='base'>Base <small id="baseLimit">2-36</small> :</label></td>
+            <td><input type='number' id='base' value="2" min="2" max="36" maxlength="2"><input type="button" id="calculateBTN" value="Calculate"></td>
         </tr>
     </table>
+    <button id='renderBTN'>
+        <span class="material-icons">show_chart</span><b>Render Chart</b>
+    </button>
     <div id='chart'></div>
+    <button id='downloadBTN'>
+        <span class="material-icons">file_download</span><b>Download</b>
+    </button>
     <div id="seq"></div>
-<script src="calculator.js"></script>
-<style id='binaryStyle'>
-.bin { display: none; }
-</style>
+    <div id="loader">
+        <div id="spinner"></div>
+        <span>Loading... Please wait</span>
+    </div>
+    <a id="backToTop" href='#form'>
+        <span class="material-icons">arrow_upward</span>
+    </a>
+    <script src="calculator.js"></script>
 </body>
+
 </html>

@@ -1,17 +1,42 @@
+html {
+    width: 100%;
+    scroll-behavior: smooth;
+}
 
 body {
-    font-family: sans-serif;
+    font-family: monospace;
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: calc(100vw - 1rem);
+    width: calc(100% - 1rem);
+    margin: 0.5rem;
+}
+
+h1 {
+    color:#82ecff;
+    font-size: 2.5rem;
+    margin: 1rem 0.5rem;
+    text-shadow: -1.2px -1.2px 0 #09c, 1.2px -1.2px 0 #09c, -1.2px 1.2px 0 #09c, 2.4px 2.4px 0 #09c;
 }
 
 #form {
     width: min(20rem, calc(100vw - 2rem));
+    color: #555;
+    border-radius: 1rem;
+    box-shadow: 0 0 2rem #82ecff;
+    margin: 2rem 0;
 }
 
-input[type=text], input[type=number] {
+label {
+    font-weight: bold;
+}
+
+#baseLimit {
+    color: #bbb;
+    transition: all 0.25s;
+}
+
+input[type=number] {
     outline: none;
     border: solid lightgray;
     border-width: 0 0 3px 0;
@@ -19,16 +44,22 @@ input[type=text], input[type=number] {
     padding: 0.2rem 0.5rem 0.1rem 0.5rem;
     text-align: right;
     transition: 0.25s all;
+    font-family: monospace;
 }
 
-input[type=text]:hover, input[type=number]:hover {
+input[type=number]:hover {
     border-color: rgb(184, 228, 255);
     background-color: rgb(232, 247, 255);
 }
 
-input[type=text]:focus, input[type=number]:focus {
+input[type=number]:focus {
     border-color: rgb(0, 181, 253);
     background-color: rgb(215, 240, 255);
+}
+
+.error{
+    border-color: rgb(255, 63, 63) !important;
+    background-color: rgb(255, 223, 223) !important;
 }
 
 input::-webkit-outer-spin-button,
@@ -43,11 +74,54 @@ table {
     overflow: scroll;
 }
 
+#seq {
+    max-width: 100%;
+}
+
+#seq table {
+    table-layout: fixed;
+    width: 100%;
+    max-width: 100%;
+}
+
+#seq table td {
+    font-size: 0.8rem;
+    font-family: monospace;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#seq table td:active {
+    position: absolute;
+    display: block;
+    z-index: 20;
+    background: rgba(255,255,128,1);
+    overflow-wrap: anywhere;
+    box-shadow: 0 0 8px 2px black;
+    border-radius: 0.5rem;
+    margin-right: 0.5rem;
+}
+
+#seq table td:nth-child(1), #seq table th:nth-child(1) {
+    width: 2.25rem;
+}
+
+#seq table tr:nth-child(even) {
+    background-color: #e0fbff;
+}
+
 td, th {
     border: solid black 1px;
-    text-align: right;
     font-size: 0.9rem;
     padding: 0.1rem 0.25rem;
+}
+
+#form td {
+    text-align: right;
+}
+
+td span {
+    white-space: nowrap;
 }
 
 .loopTD {
@@ -56,31 +130,33 @@ td, th {
 
 th {
     text-align: center;
-    background-color: blue;
-    color: white;
-    padding: 0.25rem 0.5rem;
+    background-color: #82ecff;
 }
 
 #form td {
     border: none;
     font-size: 1rem;
-    padding: 0.25rem 0.5rem;
+    padding: 0.5rem 0.5rem;
     display: table-cell;
 }
 #form tr td:nth-child(2) {
     text-align: left;
     display: inline-flex;
-    width: 100%;
+    width: calc(100% - 1rem);
     justify-content: space-between;
     align-items: center;
     justify-items: center;
 }
 
-input[type=text], #maxsteps {
+#startNum, #maxsteps {
     width: calc(100% - 1rem);
 }
 
-#calculateBTN {
+#base {
+    width: 4rem;
+}
+
+input[type=button], button {
     padding: 0.25rem 0.5rem;
     height: 100%;
     border: none;
@@ -92,7 +168,23 @@ input[type=text], #maxsteps {
     cursor:pointer;
 }
 
-#calculateBTN:disabled {
+button {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+button span {
+    font-size: 1rem !important;
+    margin-right: 0.5rem;
+}
+
+#downloadBTN, #renderBTN {
+    display: none;
+    margin: 1rem 0.5rem;
+}
+
+input[type=button]:disabled, button:disabled {
     background: #fb6262;
     cursor: not-allowed;
 }
@@ -102,5 +194,48 @@ input[type=text], #maxsteps {
 }
 
 #chart {
-    width: min(100%, 40rem);
+    width: min(calc(100% - 1rem), 40rem);
+}
+
+#loader {
+    display: none;
+    flex-direction: row;
+    align-items: center;
+    color: #777;
+}
+
+#spinner {
+    height: 0.75rem;
+    width: 0.75rem;
+    border: solid rgb(230, 230, 240) 0.25rem;
+    border-radius: 50%;
+    margin: 1rem;
+    border-top-color: #00b5fd;
+    border-left-color: #00b5fd;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+#backToTop {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    height: 3rem;
+    width: 3rem;
+    border-radius: 50%;
+    background-color: #00b5fd;;
+    color: white;
+    box-shadow:  0.1rem 0.1rem 0.5rem rgba(0,0,0,0.5);
+    transition: all 0.25s;
+    overflow: hidden;
+    margin-right: -5rem;
+    transform: translateZ(0);
 }
