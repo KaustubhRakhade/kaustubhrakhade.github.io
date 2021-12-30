@@ -6,52 +6,125 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Collatz Calculator</title>
+
+    <!-- <script src="chart.js"></script>
+    <link rel="stylesheet" href="googlefont.css"> -->
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- <script src="chart.js"></script> -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <div id='#top'></div>
-    <h1>Collatz Calculator</h1>
-    <table id="form">
-        <tr colspan='2' class="formRow">
-            <td><label for="startNum">Number:</label></td>
-            <td><input type='number' id='startNum' value="7"></td>
-        </tr>
-        <tr class="formRow">
-            <td><label for="multiplier">Format:</label></td>
-            <td><input type='number' id='multiplier' value="3" max="100" min="-100">
-                <span>n +</span>
-                <input type='number' id='offset' value="1" max="100" min="-100">
-            </td>
-        </tr>
-        <tr class="formRow">
-            <td><label for='maxsteps'>Max Steps:</label></td>
-            <td><input type='number' id='maxsteps' value="10000"></td>
-        </tr>
-        <tr class="formRow">
-            <td><label for='base'>Base <small id="baseLimit">2-36</small> :</label></td>
-            <td><input type='number' id='base' value="2" min="2" max="36" maxlength="2"><input type="button" id="calculateBTN" value="Calculate"></td>
-        </tr>
-    </table>
+
+<h1>Collatz Calculator</h1>
+<table id="form">
+    <tr colspan='2' class="formRow">
+        <td><label for="startNum">Number:</label></td>
+        <td><input type='number' id='startNum' value="7" placeholder="Starting Number"></td>
+    </tr>
+    <tr class="formRow">
+        <td><label for="multiplier">Format:</label></td>
+        <td><input type='number' id='multiplier' value="3" max="100" min="-100" placeholder="Multiplier">
+            <span>n+</span>
+            <input type='number' id='offset' value="1" max="100" min="-100" placeholder="Offset">
+        </td>
+    </tr>
+    <tr class="formRow">
+        <td><label for='maxsteps'>Max Steps:</label></td>
+        <td><input type='number' id='maxsteps' value="10000" placeholder="Maximum Steps"></td>
+    </tr>
+    <tr class="formRow">
+        <td><label for='base'>Base <small id="baseLimit">2-36</small> :</label></td>
+        <td><input type='number' id='base' value="2" min="2" max="36" maxlength="2" placeholder="Base (2-36)"><input type="button" id="calculateBTN" value="Calculate"></td>
+    </tr>
+</table>
+<div id="chart"></div>
+<div id="button-container">
+    <button id='summaryBTN'>
+        <span class="material-icons">summarize</span><b>Summary</b>
+    </button>
     <button id='renderBTN'>
         <span class="material-icons">show_chart</span><b>Render Chart</b>
     </button>
-    <div id='chart'></div>
     <button id='downloadBTN'>
         <span class="material-icons">file_download</span><b>Download</b>
     </button>
-    <div id="seq"></div>
-    <div id="loader">
-        <div id="spinner"></div>
-        <span>Loading... Please wait</span>
+</div>
+<div id="seq" title="Click to expand"></div>
+<div id="loader">
+    <div id="spinner"></div>
+    <span>Loading... Please wait</span>
+</div>
+<div id="summary-bg">
+    <div id="summary">
+        <div id="summary-top">
+            <h2>Summary</h2>
+            <span class="material-icons">close</span>
+        </div>
+        <table>
+            <tr>
+                <td>Start</td>
+                <td>:</td>
+                <td><v></v></td>
+            </tr>
+            <tr>
+                <td>Format</td>
+                <td>:</td>
+                <td><v></v></td>
+            </tr>
+            <tr>
+                <td>Steps</td>
+                <td>:</td>
+                <td><v></v></td>
+            </tr>
+            <tr>
+                <td>Status</td>
+                <td>:</td>
+                <td>
+                    <div id="converge">
+                        <div id="converge-loop">
+                            <div id="converge-head">
+                                <span class="material-icons">loop</span>
+                                <span>Enters a Loop</span>
+                            </div>
+                            <span>Loop length: <v></v></span>
+                            <span>
+                                Loop id<tooltip><b>Loop ID</b> is an unique id given to each loop<br>
+                                It is the concatenation of Multiplier, Offset &<br>
+                                Lowest number in the loop, all in base36.<br>
+                                (Multiplier)<big><big>&plusmn;</big></big>(Offset)<b>_</b>(Lowest Loop value)</tooltip>: <v></v>
+                            </span>
+                        </div>
+                        <div id="converge-unknown">
+                            <div id="converge-head">
+                                <span class="material-icons">error</span>
+                                <span>Not Known</span>
+                            </div>
+                            <span>Program didn't run long enough to estabilish convergence</span>
+                        </div>
+                        <div id="converge-inf">
+                            <div id="converge-head">
+                                <span class="material-icons">trending_up</span>
+                                <span>Shoots to Infinity</span>
+                            </div>
+                            <span>An odd number will always give another odd number in this format</span>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
     </div>
-    <a id="backToTop" href='#top'>
-        <span class="material-icons">arrow_upward</span>
-    </a>
-    <script src="calculator.js"></script>
+</div>
+<a id="backToTop" title="Back to top">
+    <span class="material-icons">arrow_upward</span>
+</a>
+<script src="calculator.js"></script>
+
 </body>
 
 </html>

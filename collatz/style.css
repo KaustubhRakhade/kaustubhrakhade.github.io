@@ -4,20 +4,32 @@ html {
 }
 
 body {
-    font-family: monospace;
+    font-family: 'Share Tech', monospace;
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: calc(100% - 1rem);
-    margin: 0.5rem;
+    width: 100%;
+    margin: 0;
 }
 
 h1 {
     color:#82ecff;
-    font-size: 2.5rem;
+    font-size: 2rem;
     margin: 1rem 0.5rem;
+    pointer-events: none;
+    letter-spacing: 2px;
     text-shadow: -1.2px -1.2px 0 #09c, 1.2px -1.2px 0 #09c, -1.2px 1.2px 0 #09c, 2.4px 2.4px 0 #09c;
 }
+
+@keyframes intro {
+    0% {
+        margin-top: 4rem;
+        opacity: 0;
+    } 100% {
+        /* margin-top: 2rem; */
+        opacity: 1;
+    }
+  }
 
 #form {
     width: min(20rem, calc(100vw - 2rem));
@@ -25,11 +37,9 @@ h1 {
     border-radius: 1rem;
     box-shadow: 0 0 2rem #82ecff;
     margin: 2rem 0;
-}
+    animation: intro 1s ease-out;
+} 
 
-label {
-    font-weight: bold;
-}
 
 #baseLimit {
     color: #bbb;
@@ -44,22 +54,38 @@ input[type=number] {
     padding: 0.2rem 0.5rem 0.1rem 0.5rem;
     text-align: right;
     transition: 0.25s all;
-    font-family: monospace;
+    font-family: 'Share Tech', monospace;
+    font-size: 1rem;
 }
 
 input[type=number]:hover {
-    border-color: rgb(184, 228, 255);
+    color: #025;
+    border-color: #aef;
     background-color: rgb(232, 247, 255);
 }
 
 input[type=number]:focus {
-    border-color: rgb(0, 181, 253);
+    color: #07a;
+    border-color: #00b5fd;
     background-color: rgb(215, 240, 255);
 }
 
 .error{
-    border-color: rgb(255, 63, 63) !important;
-    background-color: rgb(255, 223, 223) !important;
+    font-weight: bold;
+    color: #f22 !important;
+    border-color: #f22 !important;
+    background-color: #fdd !important;
+}
+
+.error::placeholder {
+    color: #f99 !important;
+}
+
+
+input[type=number]::placeholder {
+    font-size: 0.75rem;
+    font-family: 'Share Tech', sans-serif;
+    color: #bbb;
 }
 
 input::-webkit-outer-spin-button,
@@ -75,7 +101,9 @@ table {
 }
 
 #seq {
-    max-width: 100%;
+    max-width: calc(100% - 1rem);
+    animation: intro 0.75s ease-out;
+    margin: 0.5rem;
 }
 
 #seq table {
@@ -86,24 +114,25 @@ table {
 
 #seq table td {
     font-size: 0.8rem;
-    font-family: monospace;
+    /* font-family: 'Share Tech', monospace; */
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-#seq table td:active {
+#seq td:nth-child(2):active, #seq td:nth-child(3):active {
     position: absolute;
+    transform: translate3d(-1px, -1px, 0);
     display: block;
     z-index: 20;
-    background: rgba(255,255,128,1);
+    background: #bff;
     overflow-wrap: anywhere;
-    box-shadow: 0 0 8px 2px black;
-    border-radius: 0.5rem;
+    box-shadow: 2px 2px 8px #00fb;
+    border-radius: 0 0.5rem 0.5rem 0.5rem;
     margin-right: 0.5rem;
 }
 
-#seq table td:nth-child(1), #seq table th:nth-child(1) {
-    width: 2.25rem;
+#seq table td:nth-child(1) , #seq table th:nth-child(1) {
+    width: 2.5rem;
 }
 
 #seq table tr:nth-child(even) {
@@ -111,7 +140,7 @@ table {
 }
 
 td, th {
-    border: solid black 1px;
+    border: solid #0099cc 1px;
     font-size: 0.9rem;
     padding: 0.1rem 0.25rem;
 }
@@ -120,15 +149,18 @@ td, th {
     text-align: right;
 }
 
-td span {
+#form td span {
     white-space: nowrap;
+    padding: 0 0.25rem;
+    letter-spacing: 4px;
 }
 
 .loopTD {
-    border-left: solid blue 4px;
+    border-left: solid #07f 4px;
 }
 
 th {
+    color: #048;
     text-align: center;
     background-color: #82ecff;
 }
@@ -136,13 +168,18 @@ th {
 #form td {
     border: none;
     font-size: 1rem;
-    padding: 0.5rem 0.5rem;
+    padding: 1rem 0.5rem 0 0.5rem;
     display: table-cell;
 }
+
+#form tr:last-child td {
+    padding-bottom: 1rem;
+}
+
 #form tr td:nth-child(2) {
     text-align: left;
     display: inline-flex;
-    width: calc(100% - 1rem);
+    width: calc(100% - 2rem);
     justify-content: space-between;
     align-items: center;
     justify-items: center;
@@ -152,26 +189,38 @@ th {
     width: calc(100% - 1rem);
 }
 
+#multiplier, #offset {
+    width: 50%;
+}
+
 #base {
-    width: 4rem;
+    width: 3rem;
 }
 
 input[type=button], button {
-    padding: 0.25rem 0.5rem;
+    padding: 0.3rem 0.75rem;
     height: 100%;
     border: none;
-    background: #00b5fd;
+    background: #bff9;
     user-select: auto;
-    color: #e8f7ff;
+    color: #00a9d1;
     font-weight: bold;
-    border-radius: 4px;
+    border-radius: 1rem;
     cursor:pointer;
+    transition: all 0.25s;
+    font-family: 'Share Tech', monospace;
+    font-size: 1rem;
+}
+
+input[type=button]:hover, button:hover {
+    background: #afff;
 }
 
 button {
     display: flex;
     flex-direction: row;
     align-items: center;
+    transition: none;
 }
 
 button span {
@@ -179,14 +228,25 @@ button span {
     margin-right: 0.5rem;
 }
 
-#downloadBTN, #renderBTN {
-    display: none;
-    margin: 1rem 0.5rem;
+#button-container button {
+    display: flex;
+    margin: 0.5rem;
+    width: max-content;
 }
 
 input[type=button]:disabled, button:disabled {
-    background: #fb6262;
+    color: #f22;
+    background: #fdd;
     cursor: not-allowed;
+}
+
+#button-container {
+    display: none;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: 0.5rem 0;
 }
 
 #form td span {
@@ -202,6 +262,7 @@ input[type=button]:disabled, button:disabled {
     flex-direction: row;
     align-items: center;
     color: #777;
+    font-size: 1rem;
 }
 
 #spinner {
@@ -238,4 +299,164 @@ input[type=button]:disabled, button:disabled {
     overflow: hidden;
     margin-right: -5rem;
     transform: translateZ(0);
+    cursor: pointer;
+}
+
+#backToTop span {
+    transition: all 0.25s;
+}
+
+#backToTop span:hover {
+    font-size: 2rem !important;
+}
+
+#summary-bg {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+}
+
+#summary {
+    background: #fff;
+    padding: 1rem 1rem 0 1rem;
+    width: max-content;
+    max-width: 25rem;
+    margin: 0.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 0 0 max(50vw, 50vh) #000a, 0 0 2rem #0008;
+}
+
+#summary-top {
+    display: flex;
+    justify-content: space-between;
+}
+
+#summary-top h2, #summary-top span {
+    margin: 0 1rem;
+    padding: 0 0.1rem;
+}
+
+#summary-top span {
+    cursor: pointer;
+    transition: all 0.25s;
+    border-radius: 1rem;
+}
+
+#summary-top span:hover {
+    background: #ddd;
+}
+
+#summary table {
+    margin: 1rem 0;
+}
+
+#summary table td {
+    border: none;
+    padding: 0.3rem 0.5rem;
+}
+
+#converge div {
+    display: flex;
+    flex-direction: column;
+}
+
+#converge #converge-head {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    border-radius: 1rem;
+    width: max-content;
+    padding: 0;
+}
+
+#summary td {
+    vertical-align: top;
+    font-size: 1.1rem;
+
+}
+
+#converge-head span {
+    margin: 0 0.5rem;
+    font-weight: bold;
+}
+
+#converge #converge-head .material-icons {
+    border-radius: 1rem;
+    line-height: 1.25rem;
+    font-size: 1.25rem;
+    padding: 0.2rem;
+    margin: 0;
+    font-weight: normal;
+}
+
+#converge-loop #converge-head {
+    background-color: #bfb;
+    color: #090
+} #converge-loop #converge-head .material-icons {
+    background-color: #8e8;
+}
+
+#converge-unknown #converge-head {
+    background-color: #fe8;
+    color: #e80;
+} #converge-unknown #converge-head .material-icons {
+    background-color: #fd7;
+}
+
+#converge-inf #converge-head {
+    background-color: #fdd;
+    color: #f22;
+} #converge-inf #converge-head .material-icons {
+    background-color: #fbb;
+}
+
+tooltip {
+    height: 1rem;
+    width: 1rem;
+    border-radius: 1rem;
+    display: inline-block;
+}
+
+tooltip .material-icons {
+    color: #667;
+    font-size: 1rem;
+    transform: translateY(2px);
+}
+
+tooltip span:nth-child(2) {
+    display: none;
+    position: absolute;
+    background-color: #334;
+    color: #fff;
+    padding: 0.25rem;
+    border: solid 2px #222;
+    border-radius: 0 0.5rem 0.5rem 0.5rem;
+    box-shadow: 2px 2px 8px #0004;
+    font-size: 0.9rem;
+    margin: -0.1rem 0 0 0.5rem;
+}
+
+tooltip:hover span:nth-child(2) {
+    display: block;
+}
+
+@media only screen and (max-width: 360px) {
+    #form, #summary {
+        width: 100%;
+        border-radius: 0;
+        margin: 1rem 0;
+    }
+
+    #button-container {
+        flex-direction: column;
+    }
+
+    #seq {
+        margin: 1rem 0;
+        max-width: 100%;
+    }
 }

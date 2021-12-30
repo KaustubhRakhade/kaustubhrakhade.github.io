@@ -3,13 +3,20 @@ var seq_var = []
 worker = new Worker("worker.js");
 worker.onmessage = function (event) {
   seq_var = event.data.seq
+  loopPoint = seq_var.indexOf(seq_var.slice(-1)[0])
+  loopPoint = (loopPoint == seq_var.length - 1) ? seq_var.length : loopPoint
   console.timeEnd('Calculation done')
   grab('#seq').innerHTML = `<table><th>Steps</th><th>Number</th><th>Base ${event.data.base}</th></table>`
   grab('#calculateBTN').value = 'Calculate'
   grab('#calculateBTN').disabled = false;
-  tableWorker.postMessage({ 'seq': seq_var.slice(0, 100), 'next': 100, 'base': event.data.base })
-  grab('#downloadBTN').style.display = 'flex';
-  grab('#renderBTN').style.display = 'flex';
+  tableWorker.postMessage({
+    'seq': seq_var.slice(0, 100),
+    'next': 100,
+    'base': event.data.base,
+    'loopPoint': loopPoint
+  });
+  summarize();
+  grab('#button-container').style.display = 'flex';
 };
 
 tableWorker = new Worker("table.js");
@@ -32,7 +39,8 @@ tableWorker.onmessage = function (event) {
         tableWorker.postMessage({
           'seq': seq_var.slice(event.data.next, event.data.next + 100),
           'next': event.data.next + 100,
-          'base': event.data.base
+          'base': event.data.base,
+          'loopPoint': event.data.loopPoint 
         })
       }
       else {
@@ -67,19 +75,17 @@ function extractParams(ids) {
       }
     }
   }
-  console.log(parameters.base)
   if (parameters.base <= 36 && parameters.base >= 2) {
     return parameters
   }
-  console.log('here')
-  grab('#baseLimit').style.color = ''
-  grab('#baseLimit').style.color = '#f00';
+  grab('#baseLimit').style.color = '#f22';
   showError('#base')
   setTimeout(() => { grab('#baseLimit').style.color = '#bbb' }, 2000)
   return null
 }
 
 function addTable(tablestr) {
+  grab("#seq").style.display = 'block';
   grab('#seq > table').style.display = 'table';
   let faketable = document.createElement('table')
   faketable.style.display = 'none';
@@ -90,37 +96,58 @@ function addTable(tablestr) {
   }
 }
 
+var seq_num = []
+function summarize() {
+  if (seq_num.length == 0) {
+    seq_num = seq_var.map((value) => {return Number(value)})
+  }
+  grab('#summary tr:nth-child(3) v').textContent = seq_num.length - 1;
+  [multiplier, offset] = grab('#summary tr:nth-child(2) v').textContent.split('n')
+  multiplier = BigInt(multiplier)
+  offset = BigInt(offset)
+  grab('#converge-loop').style.display = 'none'
+  grab('#converge-unknown').style.display = 'none'
+  grab('#converge-inf').style.display = 'none'
+  loopPoint = seq_var.slice(0,-1).indexOf(seq_var.slice(-1)[0])
+  console.log(loopPoint, multiplier + offset)
+  if (loopPoint >= 0) {
+    console.log(seq_num.slice(loopPoint, -1))
+    loopMin = Math.min(...seq_num.slice(loopPoint, -1)).toString(36)
+    grab('#converge-loop').style.display = 'flex'
+    grab('#converge-loop > span:nth-child(2) v').textContent = seq_num.length - loopPoint - 1
+    grab('#converge-loop > span:nth-child(3) v').textContent = `${multiplier.toString(36)}${offset<0 ? '' : '+'}${offset.toString(36)}_${loopMin}`
+  } else if ((multiplier + offset) % 2n == 1n) {
+    grab('#converge-inf').style.display = 'flex'
+  } else {
+    grab('#converge-unknown').style.display = 'flex'
+  }
+
+}
+
 function renderChart() {
+  console.time('comp')
+  if (seq_num.length == 0) {
+    seq_num = seq_var.map((value) => {return Number(value)})
+  }
+  console.timeEnd('comp')
   let seq = seq_var;
+  loopPoint = seq.indexOf(seq.slice(-1)[0])
   let ctx = document.createElement('canvas')
   ctx.style.display = 'none';
-  let xData = new Array(seq.length).fill(null);
-  let yData = new Array(seq.length).fill(null);
-  let loopData = new Array(seq.length).fill(null);
-  let loopJoin = new Array(seq.length).fill(null);
-  loopPoint = seq.indexOf(seq.slice(-1)[0])
-  for (i = 0; i < seq.length; i++) {
-    xData[i] = i
-    let y = parseInt(seq[i])
-    if (i == loopPoint || i == seq.length - 1) {
-      yData[i] = y
-      loopData[i] = (y)
-      loopJoin[i] = (y)
-    }
-    else if (i > loopPoint) {
-      loopData[i] = (y)
-    }
-    else {
-      yData[i] = y
-    }
-  }
+  let xData = new Array(seq.length).fill()
+  xData = xData.map((value, index) => { return (index)})
+  let yData = seq_num.slice(0, loopPoint+1)
+  let loopData = new Array(loopPoint).fill().concat(seq_num.slice(loopPoint))
+  let loopJoin = new Array(seq.length).fill();
+  loopJoin[loopPoint] = seq_num[loopPoint]
+  loopJoin[seq.length-1] = seq_num[seq.length-1]
   let data = {
     labels: xData,
     datasets: [{
       label: 'Steps',
       data: yData,
       fill: false,
-      borderColor: 'rgb(0, 0, 255)',
+      borderColor: 'rgb(0,127,255)',
       tension: 0,
       pointRadius: 0,
       pointHitRadius: 2,
@@ -129,7 +156,7 @@ function renderChart() {
       label: 'Loop Steps',
       data: loopData,
       fill: false,
-      borderColor: 'rgb(255, 0,0)',
+      borderColor: 'rgb(255,31,31)',
       tension: 0,
       pointRadius: 0,
       pointHitRadius: 2,
@@ -139,7 +166,7 @@ function renderChart() {
       data: loopJoin,
       fill: false,
       spanGaps: true,
-      borderColor: 'rgb(255, 128,128)',
+      borderColor: 'rgb(255,127,127)',
       tension: 0,
       pointRadius: 0,
       pointHitRadius: 2,
@@ -151,7 +178,6 @@ function renderChart() {
     data: data
   });
   myChart.options.scales['y'].ticks = {
-  // myChart.options.scales['yAxes'].ticks = {
     callback: function (value, index, values) {
       let order = Math.floor(Math.log10(Math.abs(value)))
       return order > 4 ? (value / 10 ** order).toFixed(1) + 'e' + order : value;
@@ -161,7 +187,7 @@ function renderChart() {
   grab('#chart').innerHTML = '';
   grab('#chart').appendChild(ctx)
   ctx.style.display = 'block';
-  grab('#renderBTN').style.display = 'none';
+  grab("#chart").style.display = 'block'
   grab('#renderBTN').disabled = false
   grab('#renderBTN > b').textContent = 'Render Chart'
 }
@@ -173,6 +199,8 @@ function showError(id) {
 
 function calculate() {
   let parameters = extractParams(['#startNum', '#multiplier', '#offset', '#maxsteps', '#base'])
+  seq_num = []
+  seq_var = []
   if (parameters != null) {
     console.time('Calculation done')
     console.log(parameters)
@@ -180,48 +208,78 @@ function calculate() {
     grab('#calculateBTN').disabled = true
     grab('#calculateBTN').value = 'Calculating'
     grab('#loader').style.display = 'flex';
+    grab('#summary tr:nth-child(1) v').textContent = parameters.startNum
+    grab('#summary tr:nth-child(2) v').textContent = `${parameters.multiplier}n${parameters.offset < 0 ? '' : '+'}${parameters.offset}`
   }
 }
 
 grab = (query) => { return document.querySelector(query) }
 
 grab('#calculateBTN').addEventListener('click', (this, () => {
-  grab('#downloadBTN').style.display = 'none';
-  grab('#renderBTN').style.display = 'none';
+  grab('#button-container').style.display = 'none';
   grab('#loader').style.display = 'none';
   try {
     grab("#seq").innerHTML = ''
+    grab("#seq").style.display = 'none';
     grab("#chart").innerHTML = ''
+    grab("#chart").style.display = 'none';
   } catch { }
   calculate()
 }))
 
-grab('#startNum').addEventListener('keydown', function (e) {
+grab('#startNum').addEventListener('keydown', (e) => {
   if (e.key == 'Enter') {
     grab('#calculateBTN').click()
     e.preventDefault();
   }
 });
 
-grab('#renderBTN').addEventListener('click', function (e) {
+grab('#renderBTN').addEventListener('click', () => {
   console.time('Rendered Chart')
-  this.disabled = true
+  grab('#renderBTN').disabled = true
   grab('#renderBTN > b').textContent = 'Rendering'
   setTimeout(() => {
     renderChart()
     console.timeEnd('Rendered Chart')
-  }, 10);
+  }, 50);
 });
 
-grab('#downloadBTN').addEventListener('click', function (e) {
+grab('#downloadBTN').addEventListener('click', () => {
   console.time('Downloaded CSV')
-  this.disabled = true
+  grab('#downloadBTN').disabled = true
   grab('#downloadBTN > b').textContent = 'Downloading'
   setTimeout(() => {
     downloadCSV()
     console.timeEnd('Downloaded CSV')
-  }, 10);
+  }, 50);
 });
+
+// When the user clicks on the button, scroll to the top of the document
+grab('#backToTop').addEventListener('click', () => {
+  document.body.scrollTop = 0; // For Safari
+  document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+});
+
+grab('#summaryBTN').addEventListener('click', () => {
+  console.log('clicked o summary')
+  grab('#summary-bg').style.display = 'flex';
+});
+
+grab('#summary-top > span').addEventListener('click', () => {
+  grab('#summary-bg').style.display = 'none';
+});
+
+grab('#summary-bg').addEventListener('click', () => {
+  if (grab('#summary:hover') == null) {
+    grab('#summary-bg').style.display = 'none';
+  }
+});
+
+for (tooltip of document.querySelectorAll('tooltip')) {
+  content = tooltip.innerHTML;
+  tooltip.innerHTML = `<span class="material-icons">info</span>
+  <span>${content}</span>`
+}
 
 function downloadCSV() {
   let csvText = seq_var.join('%0A')
