@@ -42,7 +42,18 @@
 window.addEventListener("deviceorientation", handleOrientation, true);
 function handleOrientation(e) {
 	document.querySelector('#sensor').textContent = JSON.stringify(e)
-}
+
+
+	navigator.mediaDevices.enumerateDevices()
+.then(function(devices) {
+  devices.forEach(function(device) {
+    document.querySelector('#sensor').append(device.kind + ": " + device.label +
+                " id = " + device.deviceId);
+  });
+})
+.catch(function(err) {
+	document.querySelector('#sensor').append(err.name + ": " + err.message);
+});}
 </script>
 </body>
 </html>
