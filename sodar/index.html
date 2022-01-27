@@ -48,7 +48,7 @@ function handleOrientation(e) {
 .then(function(devices) {
   devices.forEach(function(device) {
     document.querySelector('#sensor').append(device.kind + ": " + device.label +
-                "<br>");
+                " --------------------------- ------------------------- ");
   });
 })
 .catch(function(err) {
