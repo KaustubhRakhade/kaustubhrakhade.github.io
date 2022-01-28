@@ -93,7 +93,7 @@ footer a {
 	  </p>
 	</footer>
   
-	<script>
+  <script>
 		const video = document.getElementById('video');
 const button = document.getElementById('button');
 const select = document.getElementById('select');
@@ -106,7 +106,7 @@ function stopMediaTracks(stream) {
 }
 
 function gotDevices(mediaDevices) {
-//   select.innerHTML = `<option>Select Camera</option>`;
+  select.innerHTML = `<option disabled selected>Select Camera</option>`;
   let count = 1;
   mediaDevices.forEach(mediaDevice => {
     if (mediaDevice.kind === 'videoinput') {
@@ -141,9 +141,10 @@ select.addEventListener('change', (event) => {
       video.srcObject = stream;
       return navigator.mediaDevices.enumerateDevices();
     })
-    // .then(gotDevices)
+    .then(gotDevices)
     .catch(error => {
       console.error(error);
+      navigator.mediaDevices.enumerateDevices().then(gotDevices);
     });
 });
 
