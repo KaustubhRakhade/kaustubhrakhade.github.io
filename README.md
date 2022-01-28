@@ -1,1 +1,1 @@
-# https://kaustubhrakhade.github.io/collatz/
+# https://kaustubhrakhade.github.io/
