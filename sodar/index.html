@@ -1,59 +1,154 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en"><head>
 	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
- 
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Camera selection</title>
 <style>
-#container {
-	margin: 0px auto;
-	width: 500px;
-	height: 375px;
-	border: 10px #333 solid;
+	html,
+body {
+  margin: 0;
+  padding: 0;
 }
-#videoElement {
-	width: 500px;
-	height: 375px;
-	background-color: #666;
+
+html {
+  height: 100%;
+}
+
+body {
+  font-family: Helvetica, Arial, sans-serif;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  background: #f0293e;
+  color: #fff;
+  text-align: center;
+}
+main {
+  background: #ffffff;
+  min-height: 80vh;
+  flex-grow: 1;
+}
+
+.controls {
+  text-align: center;
+  padding: 0.5em 0;
+  background: #333e5a;
+}
+
+.controls {
+  color: #fff;
+}
+.controls p {
+  margin: 0;
+}
+.controls > div {
+  margin-bottom: 0.5em;
+}
+.controls > div:last-child {
+  margin-bottom: 0;
+}
+
+video {
+  width: 100%;
+  max-width: 600px;
+  display: block;
+  margin: 0 auto;
+}
+
+footer {
+  background: #333e5a;
+  color: #fff;
+  text-align: center;
+}
+
+footer a {
+  color: #fff;
 }
 </style>
-</head>
- 
-<body>
-<div id="container">
-	<video autoplay="true" id="videoElement">
-	
-	</video>
-</div>
-<div id="sensor"></div>
-<script>
-// var video = document.querySelector("#videoElement");
+  
+  </head>
+  
+  <body>
+  
+	<header>
+	  <h1>SODAR</h1>
+	</header>
+  
+	<main>
+	  <div class="controls">
+		<select id="select"><option disabled selected>Select Camera</option></select>
+		<button id="fscreen">Fullscreen</button>
+		</select>
+	  </div>
+  
+	  <video id="video" autoplay="" playsinline=""></video>
+	</main>
+  
+	<footer>
+	  <p>Built by KostyR13
+	  </p>
+	</footer>
+  
+	<script>
+		const video = document.getElementById('video');
+const button = document.getElementById('button');
+const select = document.getElementById('select');
+let currentStream;
 
-// if (navigator.mediaDevices.getUserMedia) {
-//   navigator.mediaDevices.getUserMedia({ video: true })
-//     .then(function (stream) {
-//       video.srcObject = stream;
-//     })
-//     .catch(function (err0r) {
-//       console.log("Something went wrong!");
-//     });
-// }
-window.addEventListener("deviceorientation", handleOrientation, true);
-function handleOrientation(e) {
-	document.querySelector('#sensor').textContent = JSON.stringify(e)
-
-
-	navigator.mediaDevices.enumerateDevices()
-.then(function(devices) {
-  devices.forEach(function(device) {
-    document.querySelector('#sensor').append(device.kind + ": " + device.label +
-                " --------------------------- ------------------------- ");
+function stopMediaTracks(stream) {
+  stream.getTracks().forEach(track => {
+    track.stop();
   });
-})
-.catch(function(err) {
-	document.querySelector('#sensor').append(err.name + ": " + err.message);
-});}
-</script>
-</body>
-</html>
+}
+
+function gotDevices(mediaDevices) {
+//   select.innerHTML = `<option>Select Camera</option>`;
+  let count = 1;
+  mediaDevices.forEach(mediaDevice => {
+    if (mediaDevice.kind === 'videoinput') {
+      const option = document.createElement('option');
+      option.value = mediaDevice.deviceId;
+      const label = mediaDevice.label || `Camera ${count++}`;
+      const textNode = document.createTextNode(label);
+      option.appendChild(textNode);
+      select.appendChild(option);
+    }
+  });
+}
+
+select.addEventListener('change', (event) => {
+  if (typeof currentStream !== 'undefined') {
+    stopMediaTracks(currentStream);
+  }
+  const videoConstraints = {};
+  if (select.value === '') {
+    videoConstraints.facingMode = 'environment';
+  } else {
+    videoConstraints.deviceId = { exact: select.value };
+  }
+  const constraints = {
+    video: videoConstraints,
+    audio: false
+  };
+  navigator.mediaDevices
+    .getUserMedia(constraints)
+    .then(stream => {
+      currentStream = stream;
+      video.srcObject = stream;
+      return navigator.mediaDevices.enumerateDevices();
+    })
+    // .then(gotDevices)
+    .catch(error => {
+      console.error(error);
+    });
+});
+
+navigator.mediaDevices.enumerateDevices().then(gotDevices);
+	</script>
+  
+  
+  </body></html>
