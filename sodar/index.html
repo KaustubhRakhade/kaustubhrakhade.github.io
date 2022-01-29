@@ -4,6 +4,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>Camera selection</title>
+  <script src='/jquery-3.2.1.min.js'></script>
 <style>
 	html,
 body {
@@ -52,17 +53,36 @@ main {
   margin-bottom: 0;
 }
 
+#video-wrapper {
+  width: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  background-color: #333e5a;
+  display: flex;
+  justify-content: center;
+}
+
 video {
   width: 100%;
   max-width: 600px;
   display: block;
   margin: 0 auto;
+  position: absolute;
 }
 
 footer {
   background: #333e5a;
   color: #fff;
   text-align: center;
+}
+
+#circle {
+  position: absolute;
+  width: 5rem;
+  aspect-ratio: 1;
+  border: solid #f00 1rem;
+  border-radius: 50%;
+  transform: perspective(27rem) translate3D(0px, 3rem, 23rem) rotateX(90deg);
 }
 
 footer a {
@@ -81,11 +101,17 @@ footer a {
 	<main>
 	  <div class="controls">
 		<select id="select"><option disabled selected>Select Camera</option></select>
-		<button id="fscreen">Fullscreen</button>
+		<button id="fscreen" onclick="openFullscreen()">Fullscreen</button>
 		</select>
 	  </div>
+    <input type="range" min="0" max="10" value="5" class="slider" id="transY" onchange="updateCircle()">
+    <input type="range" min="1" max="50" value="15" class="slider" id="transZ" onchange="updateCircle()">
+    <input type="range" min="1" max="100" value="27" class="slider" id="pers" onchange="updateCircle()">
+  <div id="video-wrapper">
+    <video id="video" autoplay="" playsinline=""></video>
+    <div id="circle"></div>
+  </div>
   
-	  <video id="video" autoplay="" playsinline=""></video>
 	</main>
   
 	<footer>
@@ -93,7 +119,7 @@ footer a {
 	  </p>
 	</footer>
   
-	<script>
+  <script>
 		const video = document.getElementById('video');
 const button = document.getElementById('button');
 const select = document.getElementById('select');
@@ -106,7 +132,7 @@ function stopMediaTracks(stream) {
 }
 
 function gotDevices(mediaDevices) {
-//   select.innerHTML = `<option>Select Camera</option>`;
+  select.innerHTML = `<option disabled selected>Select Camera</option>`;
   let count = 1;
   mediaDevices.forEach(mediaDevice => {
     if (mediaDevice.kind === 'videoinput') {
@@ -141,13 +167,33 @@ select.addEventListener('change', (event) => {
       video.srcObject = stream;
       return navigator.mediaDevices.enumerateDevices();
     })
-    // .then(gotDevices)
+    .then(gotDevices)
     .catch(error => {
       console.error(error);
+      navigator.mediaDevices.enumerateDevices().then(gotDevices);
     });
 });
 
 navigator.mediaDevices.enumerateDevices().then(gotDevices);
+
+function openFullscreen() {
+  elem = document.querySelector('#video-wrapper');
+  if (elem.requestFullscreen) {
+    elem.requestFullscreen();
+  } else if (elem.webkitRequestFullscreen) { /* Safari */
+    elem.webkitRequestFullscreen();
+  } else if (elem.msRequestFullscreen) { /* IE11 */
+    elem.msRequestFullscreen();
+  }
+}
+
+function updateCircle() {
+  circle = document.querySelector('#circle')
+  tY = document.querySelector('#transY').value
+  tZ = document.querySelector('#transZ').value
+  pV = document.querySelector('#pers').value
+  $(circle).css('transform', `perspective(${pV}rem) translate3D(0px, ${tY}rem, ${tZ}rem) rotateX(90deg)`)
+}
 	</script>
   
   
