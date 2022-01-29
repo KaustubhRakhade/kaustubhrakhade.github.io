@@ -85,6 +85,10 @@ footer {
   transform: perspective(27rem) translate3D(0px, 3rem, 23rem) rotateX(90deg);
 }
 
+input[type=range] {
+  width: 90%;
+}
+
 footer a {
   color: #fff;
 }
@@ -107,6 +111,7 @@ footer a {
     <input type="range" min="0" max="10" value="5" class="slider" id="transY" onchange="updateCircle()">
     <input type="range" min="1" max="50" value="15" class="slider" id="transZ" onchange="updateCircle()">
     <input type="range" min="1" max="100" value="27" class="slider" id="pers" onchange="updateCircle()">
+    <button onclick="updateCircle()">update</button>
   <div id="video-wrapper">
     <video id="video" autoplay="" playsinline=""></video>
     <div id="circle"></div>
