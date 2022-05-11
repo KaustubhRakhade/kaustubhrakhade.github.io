@@ -5,6 +5,8 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>Camera selection</title>
   <script src='/jquery-3.2.1.min.js'></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <style>
 	html,
 body {
@@ -21,6 +23,7 @@ body {
   min-height: 100%;
   display: flex;
   flex-direction: column;
+  background: blue;
 }
 
 header {
@@ -30,100 +33,591 @@ header {
 }
 main {
   background: #ffffff;
-  min-height: 80vh;
-  flex-grow: 1;
+  min-height: 100vh;
+  max-height: 100vh;
+  display: none;
+  align-items: center;
+  flex-direction: column;
 }
 
 .controls {
+  position: fixed;
+  top: 0;
   text-align: center;
-  padding: 0.5em 0;
   background: #333e5a;
+  width: 100%;
+  height: 3rem;
+  padding-bottom: 1rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(180deg,#000b, #0000);
 }
 
-.controls {
-  color: #fff;
-}
-.controls p {
-  margin: 0;
-}
 .controls > div {
-  margin-bottom: 0.5em;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
-.controls > div:last-child {
-  margin-bottom: 0;
+
+.controls > div > div {
+  height: 2.5rem;
+  width: 3rem;
+  background-color: #0000;
+  border-radius: 2rem;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s;
+  margin: 0 0.5rem;
+}
+
+#exitFullScreen span {
+  font-size: 2rem;
+}
+
+.controls > div > div:hover {
+  background-color: #0002;
+}
+
+select {
+  height: 2rem;
+  width: 3rem;
+  position: absolute;
+  opacity: 0;
+}
+
+option {
+  font-size: 1rem;
+  background-color: #fee;
+
+}
+
+option[selected] {
+  font-weight: bold;
+}
+
+option[disabled] {
+  text-align: center;
+  background-color: #f77;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: normal;
+}
+
+#video-bg {
+  height: 100vh;
+  width: 100vw;
+  object-fit: cover;
+  overflow: hidden;
+  position: absolute;
+  bottom: 0;
+  right: 0;
 }
 
 #video-wrapper {
-  width: 100%;
   position: relative;
+  min-width: 100vw;
+  min-height: 100vh;
   transform-style: preserve-3d;
-  background-color: #333e5a;
+  background-color: #001;
   display: flex;
   justify-content: center;
+  align-items: center;
+  overflow: hidden;
 }
 
 video {
-  width: 100%;
-  max-width: 600px;
+  min-width: 100%; 
+  min-height: 100%; 
+
+  /* Setting width & height to auto prevents the browser from stretching or squishing the video */
+  width: auto;
+  height: auto;
   display: block;
   margin: 0 auto;
   position: absolute;
+  /* object-fit: cover; */
 }
 
-footer {
-  background: #333e5a;
-  color: #fff;
-  text-align: center;
-}
-
-#circle {
+#c {
   position: absolute;
-  width: 5rem;
-  aspect-ratio: 1;
-  border: solid #f00 1rem;
+  min-width: 100%; 
+  min-height: 100%; 
+  /* object-fit: cover; */
+}
+
+/* main { display: none;} */
+
+#startPC, #startMOB {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  display: none;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
+@keyframes rise {
+  0% {
+    opacity: 0;
+    transform: translateY(5rem);
+  }
+  30% {
+    opacity: 0;
+    transform: translateY(5rem);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes rise1 {
+  0% {
+    transform: translateY(10rem);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+
+@keyframes r1 {
+  0% {
+    top: 110vh;
+    border-width: 0;
+  }
+  100% {
+    top: -78vh;
+    border-width: 25vh;
+  }
+}
+
+@keyframes r2 {
+  0% {
+    top: 110vh;
+    border-width: 0;
+  }
+  100% {
+    top: -72vh;
+    border-width: 25vh;
+  }
+}
+
+#ring1 {
+  position: absolute;
+  width: 400vw;
+  height: 300vh;
+  background: #00f;
+  border: solid white;
+  border-width: 25vh;
   border-radius: 50%;
-  transform: perspective(27rem) translate3D(0px, 3rem, 23rem) rotateX(90deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: -78vh;
+  animation: r1 2s cubic-bezier(0.75, 0, 0.6, 1);
+}
+
+#ring2 {
+  width: 180vw;
+  height: 100vh;
+  background: #fff;
+  border-radius: 50%;
+}
+
+#landing {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  flex-direction: column;
+  /* transform: translateY(-5rem); */
+}
+
+#phone {
+  display: flex;
+  align-items: center;
+  position: relative;
+  flex-direction: column;
+  height: 28rem;
+} 
+
+#phone h1 {
+  color: #fff;
+  font-size: 2.5rem;
+  margin-top: 5rem;
+  animation: rise1 2s cubic-bezier(0.75, 0, 0.6, 1);
+  /* transform: translateY(-10rem); */
+}
+#phone h2 {
+  color: #fff;
+  font-size: 0.6rem;
+  /* transform: translateY(-7rem); */
+  text-align: center;
+  animation: rise 2s cubic-bezier(0.75, 0, 0.6, 1);
+}
+
+#landing h3 {
+  color: #00f;
+  font-size: 0.8rem;
+  /* transform: translateY(-7rem); */
+  text-align: center;
+  margin: 1.5rem 0 1rem 0;
+  animation: rise 2s cubic-bezier(0.75, 0, 0.6, 1);
+}
+
+#phone img {
+  position: absolute;
+  height: 28rem;
+  animation: rise 2s cubic-bezier(0.75, 0, 0.6, 1);
+}
+
+#qr {
+  height: 4rem;
+  animation: rise 2s cubic-bezier(0.75, 0, 0.6, 1);
+}
+
+#phone button {
+  background: #0f0;
+  border: none;
+  border-radius: 2rem;
+  height: 3.6rem;
+  width: 3.6rem;
+  font-size: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  margin-top: 8rem;
+  animation: rise 2s cubic-bezier(0.75, 0, 0.6, 1);
+}
+
+#startMOB #ring1 {
+  top: -72vh;
+  animation: r2 2s cubic-bezier(0.75, 0, 0.6, 1);
+}
+
+#startMOB #phone {
+  height: auto;
+}
+
+#startMOB #phone h1 {
+  font-size: 4rem;
+  margin-top: 2rem;
+}
+
+#startMOB #phone h2 {
+  font-size: 1rem;
+}
+
+#startMOB #phone button {
+  height: 4rem;
+  width: 8rem;
+  font-size: 1rem;
+  margin-top: 10rem;
+  margin-bottom: 2rem;
+  font-weight: bold;
+}
+
+/* The slider itself */
+.slider {
+  -webkit-appearance: none;  /* Override default CSS styles */
+  appearance: none;
+  width: 100%; /* Full-width */
+  height: 4px; /* Specified height */
+  background: #fff; /* Grey background */
+  outline: none; /* Remove outline */
+   border-radius: 2px;
+}
+
+
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  width: 16px; /* Set a specific slider handle width */
+  height: 16px; /* Slider handle height */
+  background: #0f0; /* Green background */
+  cursor: pointer; /* Cursor on hover */
+  border-radius: 8px;
+  cursor: ew-resize;
+}
+
+.slider::-moz-range-thumb {
+  width: 16px; /* Set a specific slider handle width */
+  height: 16px; /* Slider handle height */
+  background: #00f; /* Green background */
+  cursor: pointer; /* Cursor on hover */
+  border-radius: 8px;
+}
+
+</style>
+  
+</head>
+<body>
+
+<div id='startPC'>
+  <div id="ring1">
+    <div id="ring2"></div>
+  </div>
+
+  <div id="landing">
+    <div id="phone">
+      <img src="phone_x2.png">
+      <h1>Sodar</h1>
+      <h2>Use AR to visualise social<br>distancing guidelines around you.</h2>
+      <button class='material-icons'>play_arrow</button>
+    </div>
+    <h3>Sodar is only available on devices with Camera and Motion Sensors<br>
+      Scan the QR code with your phone camera to open it there.</h3>
+      <img id='qr' src="qr.png">
+  </div>
+</div>
+
+<div id='startMOB'>
+  <div id="ring1">
+    <div id="ring2"></div>
+  </div>
+
+  <div id="landing">
+    <div id="phone">
+      <h1>Sodar</h1>
+      <h2>Use AR to visualise social<br>distancing guidelines around you.</h2>
+      <button onclick="start()">LAUNCH</button>
+    </div>
+  </div>
+</div>
+
+<main>
+<div id="video-bg">
+  <div id="video-wrapper">
+    <video id="video" autoplay playsinline></video>
+    <canvas id="c"></canvas>
+  </div>
+</div>
+
+<div class="controls">
+  <div id="leftControls">
+    <div id="exitFullScreen" onclick='fullscreen(false)'>
+      <span class='material-icons'>arrow_back</span>
+    </div>
+  </div>
+
+  <div id="rightControls">
+    <div id="camSelect">
+      <select id="select"><option disabled selected>Select Camera</option></select>
+      <span class='material-icons'>camera_alt</span>
+    </div>
+
+    <div id="more" onclick="showMore(true)">
+      <span class='material-icons'>more_vert</span>
+    </div>
+  </div>
+
+</div>
+<style>
+
+#settingsGrid {
+  position: fixed;
+  bottom: 0;
+  display: grid;
+  grid-template-columns: 2rem auto auto;
+  grid-gap: 1rem;
+  color: white;
+  width: calc(100% - 2rem);
+  max-width: 500px;
+  border-radius: 1rem 1rem 0 0;
+  background: #000c;
+  padding: 1rem;
+  transform: translateY(300px);
+  transition: 0.5s all;
+}
+
+#settingsGrid > div:nth-of-type(1) {
+  grid-area: 1 / 1 / span 1 / span 2;
+  padding: 0 0 1rem 0;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+#settingsGrid > div:nth-of-type(2) {
+  grid-area: 1 / 3 / span 1 / span 1;
+  text-align: right;
+  padding: 0 0 1rem 0;
+}
+#settingsGrid > div:nth-of-type(3) {
+  grid-area: 2 / 1 / span 2 / span 1;
+}
+#settingsGrid > div:nth-of-type(4) {
+  grid-area: 2 / 2 / span 1 / span 1;
+}
+#settingsGrid > div:nth-of-type(5) {
+  grid-area: 2 / 3 / span 1 / span 1;
+  text-align: right;
+}
+#settingsGrid > div:nth-of-type(6) {
+  grid-area: 3 / 2 / span 1 / span 2;
+}
+#settingsGrid > div:nth-of-type(7) {
+  grid-area: 4 / 1 / span 1 / span 1;
+}
+#settingsGrid > div:nth-of-type(8) {
+  grid-area: 4 / 2 / span 1 / span 2;
+}
+#settingsGrid > div:nth-of-type(9) {
+  grid-area: 5 / 1 / span 1 / span 1;
+}
+#settingsGrid > div:nth-of-type(10) {
+  grid-area: 5 / 2 / span 1 / span 2;
 }
 
 input[type=range] {
-  width: 90%;
+  width: 100%;
+  margin: 0;
+  transform: translateY(-0.5rem);
 }
 
-footer a {
-  color: #fff;
+#settingsGrid b {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
 }
 </style>
+
+<div id="settingsGrid">
+    <div><span>More Options</span></div>
+    <div class='icons' onclick="showMore(false)"><span class='material-icons'>close</span></div>
+
+    <div class='icons'><span class='material-icons'>tune</span></div>
+    <div><b>Field of View</b></div>
+    <div><span id='fovSpan'>70</span></div>
+    <div><input class='slider' min='30' max='120' value='72' type="range" id='fov'></div>
+
+    <div class='icons'><span class='material-icons'>share</span></div>
+    <div><b>Share</b></div>
+
+    <div class='icons'><span class='material-icons'>feedback</span></div>
+    <div><b>Feedback</b></div>
+
+</div>
+
+</main>
+
+<script>
+
+function support(e) {
+  console.log(e)
+  window.removeEventListener("devicemotion", support);
+  a = e.accelerationIncludingGravity
+  if (typeof(a.x) != 'number' || (a.x == 0 && a.y == 0 && a.z == 0)) {
+    $('#startPC').css('display', 'flex')
+
+  }
+  else {
+    $('#startMOB').css('display', 'flex')
+  }
+}
+// window.addEventListener("devicemotion", support);
+$('#startMOB').css('display', 'flex')
+
+
+function start() {
+  fullscreen(true)
+  changeCam();
+  requestAnimationFrame(render);
+}
+
+function handleResize() {
+  $('#c').css('width', $('#video').css('width'))
+  $('#c').css('height', $('#video').css('height'))
+  if (window.innerHeight < window.innerWidth) {
+    
+  }
+}
+handleResize()
+window.addEventListener("resize", handleResize);
+
+document.addEventListener('fullscreenchange', () => {
+  if (document.fullscreenElement == null) {
+    $('main').css('display', 'none')
+  }
+})
+
+function showMore(show) {
+  if (show) {
+    $('#settingsGrid').css('transform', 'translateY(0)')
+  }
+  else {
+    $('#settingsGrid').css('transform', 'translateY(300px)')
+  }
+}
+
+</script>
   
-  </head>
-  
-  <body>
-  
-	<header>
-	  <h1>SODAR</h1>
-	</header>
-  
-	<main>
-	  <div class="controls">
-		<select id="select"><option disabled selected>Select Camera</option></select>
-		<button id="fscreen" onclick="openFullscreen()">Fullscreen</button>
-		</select>
-	  </div>
-    <input type="range" min="0" max="10" value="5" class="slider" id="transY" onchange="updateCircle()">
-    <input type="range" min="1" max="50" value="15" class="slider" id="transZ" onchange="updateCircle()">
-    <input type="range" min="1" max="100" value="27" class="slider" id="pers" onchange="updateCircle()">
-    <button onclick="updateCircle()">update</button>
-  <div id="video-wrapper">
-    <video id="video" autoplay="" playsinline=""></video>
-    <div id="circle"></div>
-  </div>
-  
-	</main>
-  
-	<footer>
-	  <p>Built by KostyR13
-	  </p>
-	</footer>
-  
+  <script>
+    var angB = 0;
+    prevB = new Array(5).fill(null);
+    var angA = 0;
+    prevA = new Array(5).fill(null);
+    var angC = 0;
+    prevC = new Array(5).fill(null);
+    const average = list => list.reduce((prev, curr) => prev + curr) / list.length;
+    function handleOrientation(event) {
+      // updateFieldIfNotNull('Orientation_a', event.alpha);
+      // updateFieldIfNotNull('Orientation_b', event.beta);
+      // updateFieldIfNotNull('Orientation_g', event.gamma);
+      if (prevA[0] == null) {
+        prevA = new Array(prevA.length).fill(event.alpha);
+        prevB = new Array(prevB.length).fill(event.beta);
+        prevC = new Array(prevC.length).fill(event.gamma);
+      }
+    
+      // prevB.push(event.beta - 90*Math.round((event.beta - prevB[prevB.length - 1])/90))
+      if (Math.round((event.beta - prevB[prevB.length - 1])/30) != 0) {
+        prevB = Array(prevB.length).fill(event.beta);
+      }
+      prevB.push(event.beta)
+      prevB.shift()
+      angB = average(prevB)
+    
+    
+      // prevA.push(event.alpha)
+      if (Math.round((event.alpha - prevA[prevA.length - 1])/30) != 0) {
+        prevA = Array(prevA.length).fill(event.alpha);
+      }
+      prevA.push(event.alpha)
+      prevA.shift()
+      angA = average(prevA)
+    
+      // prevC.push(event.gamma)
+      if (Math.round((event.gamma - prevC[prevC.length - 1])/30) != 0) {
+        prevC = Array(prevC.length).fill(event.gamma);
+      }
+      prevC.push(event.gamma)
+      prevC.shift()
+      angC = average(prevC)
+    
+      // document.querySelector('h1').textContent = angC;
+      // incrementEventCount();
+    }
+    
+    let demo_button = document.getElementById("start_demo");
+      
+      // Request permission for iOS 13+ devices
+    if (
+      DeviceMotionEvent &&
+      typeof DeviceMotionEvent.requestPermission === "function"
+    ) {
+      DeviceMotionEvent.requestPermission();
+    }
+    
+    window.addEventListener("deviceorientation", handleOrientation);
+    
+    </script>
+
   <script>
 		const video = document.getElementById('video');
 const button = document.getElementById('button');
@@ -137,27 +631,31 @@ function stopMediaTracks(stream) {
 }
 
 function gotDevices(mediaDevices) {
-  select.innerHTML = `<option disabled selected>Select Camera</option>`;
+  selected = select.options.selectedIndex;
+  select.innerHTML = `<option disabled selected value=''>Select Back Camera</option>`;
   let count = 1;
   mediaDevices.forEach(mediaDevice => {
     if (mediaDevice.kind === 'videoinput') {
+      console.log(mediaDevice)
       const option = document.createElement('option');
       option.value = mediaDevice.deviceId;
-      const label = mediaDevice.label || `Camera ${count++}`;
+      const label = mediaDevice.label || `Camera #${count++}`;
       const textNode = document.createTextNode(label);
       option.appendChild(textNode);
       select.appendChild(option);
     }
   });
+  select.options.selectedIndex = selected;
+  $(select.options[selected]).attr('selected', '')
 }
 
-select.addEventListener('change', (event) => {
+function changeCam(event) {
   if (typeof currentStream !== 'undefined') {
     stopMediaTracks(currentStream);
   }
   const videoConstraints = {};
   if (select.value === '') {
-    videoConstraints.facingMode = 'environment';
+    videoConstraints.facingMode = { ideal: "environment" };
   } else {
     videoConstraints.deviceId = { exact: select.value };
   }
@@ -168,38 +666,149 @@ select.addEventListener('change', (event) => {
   navigator.mediaDevices
     .getUserMedia(constraints)
     .then(stream => {
+      track = stream.getVideoTracks()[0];
+      // track.applyConstraints({ advanced: [{torch: $('#flash')[0].checked }] });
       currentStream = stream;
       video.srcObject = stream;
       return navigator.mediaDevices.enumerateDevices();
     })
     .then(gotDevices)
+    .then(handleResize())
     .catch(error => {
       console.error(error);
       navigator.mediaDevices.enumerateDevices().then(gotDevices);
     });
-});
+}
+
+select.addEventListener('change', changeCam);
 
 navigator.mediaDevices.enumerateDevices().then(gotDevices);
 
-function openFullscreen() {
-  elem = document.querySelector('#video-wrapper');
-  if (elem.requestFullscreen) {
-    elem.requestFullscreen();
-  } else if (elem.webkitRequestFullscreen) { /* Safari */
-    elem.webkitRequestFullscreen();
-  } else if (elem.msRequestFullscreen) { /* IE11 */
-    elem.msRequestFullscreen();
+function fullscreen(open) {
+  elem = document.querySelector('main');
+  if (open) {
+    $('main').css('display', 'flex')
+    if (elem.requestFullscreen) {
+      elem.requestFullscreen();
+    } else if (elem.webkitRequestFullscreen) { /* Safari */
+      elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) { /* IE11 */
+      elem.msRequestFullscreen();
+    }
+  }
+  else {
+    $('main').css('display', 'none')
+    document.exitFullscreen()
   }
 }
 
-function updateCircle() {
-  circle = document.querySelector('#circle')
-  tY = document.querySelector('#transY').value
-  tZ = document.querySelector('#transZ').value
-  pV = document.querySelector('#pers').value
-  $(circle).css('transform', `perspective(${pV}rem) translate3D(0px, ${tY}rem, ${tZ}rem) rotateX(90deg)`)
-}
+
 	</script>
-  
+<script type="module">
+
+import {
+  WebGLRenderer,
+  PerspectiveCamera,
+  RingGeometry,
+  CircleGeometry,
+  MeshBasicMaterial,
+  Mesh,
+  Scene
+}  from './three.module.js';
+// import * as WebGLRenderer from './three.module.js/WebGLRenderer'
+// import * as THREE  from './three.module.js';
+
+const canvas = document.querySelector('#c');
+const renderer = new WebGLRenderer({canvas});
+// const renderer = new THREE.WebGLRenderer({canvas});
+renderer.setClearColor (0x000000, 0);
+
+var fov = localStorage.getItem("fov") || 40;    // field of view in degrees
+const aspect = 2;  // the canvas default
+const near = 0.1;
+const far = 6;
+var camera = new PerspectiveCamera(fov, aspect, near, far);
+// var camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+camera.rotation.order = "ZXY"
+
+const scene = new Scene();
+
+const innerRadius = 1.9;  // ui: innerRadius
+const outerRadius = 2;  // ui: outerRadius
+const segments = 180;  // ui: thetaSegments
+const ringGeometry = new RingGeometry( innerRadius, outerRadius, segments);
+// const ringGeometry = new THREE.RingGeometry( innerRadius, outerRadius, segments);
+const dotGeometry = new CircleGeometry(0.01, 18);
+// const dotGeometry = new THREE.CircleGeometry(0.01, 18);
+
+const ringMaterial = new MeshBasicMaterial({color: 0xffffff, opacity: 1, transparent: true});
+// const ringMaterial = new THREE.MeshBasicMaterial({color: 0xffffff, opacity: 1, transparent: true});
+var shadowMaterial = new MeshBasicMaterial({color: 0x000000, opacity: 0.5, transparent: true});
+// var shadowMaterial = new THREE.MeshBasicMaterial({color: 0x000000, opacity: 0.5, transparent: true});
+
+const ring = new Mesh(ringGeometry, ringMaterial);
+// const ring = new THREE.Mesh(ringGeometry, ringMaterial);
+const ringShadow = new Mesh(ringGeometry, shadowMaterial);
+// const ringShadow = new THREE.Mesh(ringGeometry, shadowMaterial);
+
+var dots = []
+for (let a=-11; a<=11; a++) {
+  for (let b=-10; b<=10; b++) {
+    let x = a*Math.sqrt(3)*0.1;
+    let y = b*0.2 + 0.1*(a%2);
+    if (x**2 + y**2 < 3.6) {
+      var dot = new Mesh(dotGeometry, ringMaterial);
+      dot.position.set(x,y,-1.49)
+      dots.push(dot)
+      var dot = new Mesh(dotGeometry, shadowMaterial);
+      dot.position.set(x,y,-1.5)
+      dots.push(dot)
+    }
+  }
+}
+
+function ripple(time) {
+  time *= 0.005;       //speed of animation
+  for (dot of dots) {
+    let x = dot.position.x
+    let y = dot.position.y
+    var dist = Math.sqrt(x**2 + y**2)
+    dot.scale.set(1 + Math.sin(5*dist-time), 1 + Math.sin(5*dist-time), 1)
+  }
+}
+
+ring.position.z = -1.49;
+ringShadow.position.z = -1.5;
+
+scene.add(ring, ringShadow, ...dots);
+renderer.render(scene, camera);
+window.render = (time) => {
+  ripple(time)
+  const canvas = renderer.domElement;
+  renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
+  camera.rotation.x = angB * Math.PI/180;
+  camera.rotation.y = angC * Math.PI/180;
+  camera.rotation.z = angA * Math.PI/180;
+  camera.position.z = -0.4*Math.cos(angB * Math.PI/180)
+  localStorage.setItem("fov", document.getElementById('fov').value)
+  camera.fov = document.getElementById('fov').value
+  camera.aspect = canvas.clientWidth / canvas.clientHeight
+  camera.updateProjectionMatrix()
+  renderer.render(scene, camera);
+  if ($('main').css('display') != 'none') {
+    requestAnimationFrame(render);
+  }
+}
+</script>
+
+<script>
+  $('.slider').on('input', function () {
+    $(this).prev().find('input').val(this.value);
+    var value = (this.value-this.min)/(this.max-this.min)*100;
+    this.style.background = `linear-gradient(90deg, #0f0 ${value}%, #999 ${value}%)`;
+    $('#fovSpan').html(this.value + '&deg')
+  });
+  $('.slider').trigger('input');
+</script>
   
   </body></html>

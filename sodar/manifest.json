@@ -1,0 +1,10 @@
+{
+    "theme_color" : "#0000ff",
+    "background_color" : "#ffffff",
+    "display" : "standalone",
+    "scope" : "/",
+    "start_url" : "sodar/ui.html",
+    "name" : "SODAR",
+    "short_name" : "SODAR",
+    "description" : "Use AR to visualise social distancing guidelines around you."
+}
