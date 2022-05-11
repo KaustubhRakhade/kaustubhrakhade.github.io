@@ -514,13 +514,15 @@ function support(e) {
   a = e.accelerationIncludingGravity
   if (typeof(a.x) != 'number' || (a.x == 0 && a.y == 0 && a.z == 0)) {
     $('#startPC').css('display', 'flex')
+    $('#startMOB').css('display', 'none')
 
   }
   else {
+    $('#startPC').css('display', 'none')
     $('#startMOB').css('display', 'flex')
   }
 }
-// window.addEventListener("devicemotion", support);
+window.addEventListener("devicemotion", support);
 $('#startMOB').css('display', 'flex')
 
 
