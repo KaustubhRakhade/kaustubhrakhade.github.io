@@ -1,27 +1,620 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KAustubh Rakhade</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      background: radial-gradient(#445 15%, #223 15%);
-      background-size: 1rem 1rem;
-      color: #9bd;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-  
-  </style>
+<title>KostyR13 - Home</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#525e65">
+<link rel="stylesheet" id="google-fonts-css" href="//fonts.googleapis.com/css?family=Josefin+Sans%3A700%2C400%2C100%7CTitillium+Web%3A400%2C700%2C400italic%2C700italic" type="text/css" media="all">
+<link rel="shortcut icon" href="/kostyLogo.ico">
+<link rel="dns-prefetch" href="//fonts.googleapis.com">
+<meta charSet="utf-8"/>
+<link rel="manifest" href="/manifest.json">
+<!-- Add icon library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+html {
+	overflow: scroll;
+	overflow-x: hidden;
+}
+::-webkit-scrollbar {
+	width: 10px;  /* Remove scrollbar space */
+	background: #32394b;  /* Optional: just make scrollbar invisible */
+}
+/* Optional: show position indicator in red */
+::-webkit-scrollbar-thumb {
+	background: #73cca8;
+}
+
+.center-con {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+
+
+.round {
+	cursor: pointer;
+	border: 2px solid #26de94;
+	width: 40px;
+	height: 40px;
+	border-radius: 100%;
+	transform: rotate(90deg);
+	margin-top: 0.8rem;
+}
+
+#cta{
+	width:100%;
+	cursor: pointer; 
+	position: absolute;
+}
+
+#cta .arrow{left: 30%;}
+.arrow {position: absolute; bottom: 0;  margin-left:0px; width: 12px; height: 12px; background-size: contain; top:15px;}
+.segunda{margin-left: 8px;}
+.next {
+	background-image: url(data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB2aWV3Qm94PSIwIDAgNTEyIDUxMiI+PHN0eWxlPi5zdDB7ZmlsbDojZmZmfTwvc3R5bGU+PHBhdGggY2xhc3M9InN0MCIgZD0iTTMxOS4xIDIxN2MyMC4yIDIwLjIgMTkuOSA1My4yLS42IDczLjdzLTUzLjUgMjAuOC03My43LjZsLTE5MC0xOTBjLTIwLjEtMjAuMi0xOS44LTUzLjIuNy03My43UzEwOSA2LjggMTI5LjEgMjdsMTkwIDE5MHoiLz48cGF0aCBjbGFzcz0ic3QwIiBkPSJNMzE5LjEgMjkwLjVjMjAuMi0yMC4yIDE5LjktNTMuMi0uNi03My43cy01My41LTIwLjgtNzMuNy0uNmwtMTkwIDE5MGMtMjAuMiAyMC4yLTE5LjkgNTMuMi42IDczLjdzNTMuNSAyMC44IDczLjcuNmwxOTAtMTkweiIvPjwvc3ZnPg==);
+}
+
+@keyframes bounceAlpha {
+	0% {opacity: 1; transform: translateX(0px) scale(1);}
+	25%{opacity: 0; transform:translateX(10px) scale(0.9);}
+	26%{opacity: 0; transform:translateX(-10px) scale(0.9);}
+	55% {opacity: 1; transform: translateX(0px) scale(1);}
+}
+
+.bounceAlpha {
+	animation-name: bounceAlpha;
+	animation-duration:1.4s;
+	animation-iteration-count:infinite;
+	animation-timing-function:linear;
+}
+
+.arrow.primera.bounceAlpha {
+	animation-name: bounceAlpha;
+	animation-duration:1.4s;
+	animation-delay:0.2s;
+	animation-iteration-count:infinite;
+	animation-timing-function:linear;
+}
+
+.round:hover .arrow{
+	animation-name: bounceAlpha;
+	animation-duration:1.4s;
+	animation-iteration-count:infinite;
+	animation-timing-function:linear;
+}
+.round:hover .arrow.primera{
+	animation-name: bounceAlpha;
+	animation-duration:1.4s;
+	animation-delay:0.2s;
+	animation-iteration-count:infinite;
+	animation-timing-function:linear;
+}
+
+body {
+	margin: 0px;
+	justify-content: center;
+	background-color: #222733;
+}
+
+#idea {
+	color: white;
+	text-align: center;
+	font-size: 40px;
+	font-family: Consolas;
+	animation-name: intro4text;
+	animation-duration: 2s;
+	animation-fill-mode: forwards;
+	animation-timing-function: ease-in-out;
+}
+@keyframes nav-intro {
+	from {
+		top: calc(-2 * clamp(8px,1vw,14px) - clamp(1rem, 3vw, 1.5rem));
+	}
+	to {
+		top: 0;
+	}
+}
+
+/* The navigation bar */
+.navbar {
+	padding: 0px;
+	margin: 0px;
+	outline: 0px;
+	display: flex;
+	justify-content: center;
+	overflow: hidden;
+	background-color: #525e65;
+	position: fixed; /* Set the navbar to fixed position */
+	width: 100%; /* Full width */
+	z-index: 2;
+	box-shadow: 0 7px 20px 0 rgb(0 0 0 / 20%), 0 4px 10px 0 rgb(0 0 0 / 20%);
+	animation-name: nav-intro;
+	animation-duration: 2s;
+	animation-fill-mode: forwards;
+}
+
+/* Change background on mouse-over */
+.navbar:hover {
+	box-shadow: 0 7px 20px 0 rgb(0 0 0 / 30%), 0 4px 10px 0 rgb(0 0 0 / 30%);
+}
+
+.nav-button {
+	cursor: pointer;
+	display: flex;
+	color: #DBE8D4;
+	font-weight: 500;
+	font-size: 1rem;
+	font-family: Titillium web, sans-serif;
+	text-align: center;
+	padding: clamp(8px,1vw,14px) 1rem;
+	align-items: center;
+}
+
+.nav-button:hover {
+	color: #26de94;
+	padding-bottom: clamp(4px, calc(1vw - 4px) ,10px);
+	border-bottom: 4px solid #73CCA8;
+}
+
+.current {
+	cursor: pointer;
+	display: flex;
+	font-weight: 500;
+	font-size: 1rem;
+	font-family: Titillium web, sans-serif;
+	text-align: center;
+	padding: clamp(8px,1vw,14px) 1rem;
+	align-items: center;
+	color: #26de94;
+	padding-bottom: clamp(4px, calc(1vw - 4px) ,10px);
+	border-bottom: 4px solid #73CCA8;
+}
+
+@keyframes main-title-intro {
+	from {
+		top: calc(-300px);
+	}
+	to {
+		top: 0;
+	}
+}
+
+
+#main-title {
+	padding-top: calc(3rem + 4vw);
+	padding-bottom: calc(100px + 10vw);
+	background-image: radial-gradient(120% calc(130px + 20vw + 2rem) at 50% -30px, #353c4e 75%, transparent 0%);
+	animation-name: r3-intro;
+	animation-duration: 1.5s;
+	animation-fill-mode: forwards;
+}
+	
+#bottom-bar1 {
+	background-image: radial-gradient(100% calc(240px + 20vw + 4rem) at 50% -30px,#272c38 75%, transparent 0%);
+	transform: rotate(180deg);
+}
+	
+#bottom-bar2 {
+	background-image: radial-gradient(100% calc(220px + 20vw + 4rem) at 50% -30px, #2d3240 75%, transparent 0%);
+}
+	
+#bottom-bar3 {
+	background-image: radial-gradient(100% calc(200px + 20vw + 4rem) at 50% -30px, #353c4e 75%, transparent 0%);
+	padding-bottom: calc(180px + 5vw);
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	align-items: center;
+}
+	
+.back2top {
+	transform: rotate(180deg);
+	color: #DBE8D4;
+	font-weight: 700;
+	font-size: 1.5rem;
+	font-family: Titillium web, sans-serif;
+	text-align: center;
+	margin-top: 0.8rem;
+	cursor: pointer;
+}
+	
+.back2top:hover {
+	color: #73cca8;
+}
+
+@media only screen and (max-width: 500px) {
+	.back2top { display: none; }
+}
+
+#title-name {
+	font-weight: 100;
+	line-height: 1;
+	font-size: clamp(10vw, 3rem,13vw);
+	letter-spacing: 0.125em;
+	font-style: normal;
+	color: #DBE8D4;
+	font-family: "Josefin Sans",monospace;
+	text-align: center;
+}
+	
+#subtitle {
+	padding-top: 0.5rem;
+	font-weight: 700;
+	font-size: clamp(1rem, 3vw, 1.5rem);
+	font-style: normal;
+	color: #DBE8D4;
+	font-family: "Josefin Sans",monospace;
+	text-align: center;
+}
+	
+@keyframes r1-intro {
+	0% {
+		opacity: 0;
+	}
+	40% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+@keyframes r2-intro {
+	0% {
+		opacity: 0;
+	}
+	30% {
+		opacity: 0;
+	}
+	75% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+@keyframes r3-intro {
+	0% {
+		opacity: 0;
+	}
+	40% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+#ring1 {
+	background-image: radial-gradient(120% calc(170px + 20vw + 2rem) at 50% -30px, #272c38 75%, transparent 75%);
+	animation-name: r1-intro;
+	animation-duration: 1s;
+	animation-fill-mode: forwards;
+}
+	
+#ring2 {
+	background-image: radial-gradient(120% calc(150px + 20vw + 2rem) at 50% -30px, #2d3240 75%, transparent 75%);
+	animation-name: r2-intro;
+	animation-duration: 1s;
+	animation-fill-mode: forwards;
+}
+	
+.textholder {
+	display: flex;
+	justify-content: center;
+	width: 100%;
+}
+
+.text {
+	width: min(720px, calc(100% - 2rem));
+	color: #DBE8D4;
+	font-weight: 500;
+	font-size: 1.2rem;
+	font-family: Titillium web, sans-serif;
+	text-align: justify;
+	line-height: 1.5;
+}
+
+.social {
+	transform: rotate(180deg);
+	display: flex;
+	justify-content: center;
+	padding-bottom: 0.5rem;
+}
+
+/* Style all font awesome icons */
+.fa {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 10px;
+	width: 44px;
+	height: 44px;
+	text-align: center;
+	text-decoration: none;
+	border-radius: 50%;
+}
+
+/* Add a hover effect if you want */
+.fa-twitter:hover, .fa-envelope:hover, .fa-youtube-play:hover  {
+	transform: scale(1.1);
+	background: #73cca8;
+}
+
+/* Add a hover effect if you want */
+.fa-github:hover {
+	transform: scale(1.1);
+	color: #73cca8;
+}
+
+/* Set a specific color for each brand */
+
+/* Github */
+.fa-github {
+	background: #353c4e;
+	color: #d8e5d1;
+	transition: color .15s, transform .1s;
+}
+
+/* Twitter */
+.fa-twitter, .fa-envelope, .fa-youtube-play {
+	background: #d8e5d1;
+	color: #353c4e;
+	transition: background .15s, transform .1s;
+ }
+
+ .copyright {
+font-weight: 100;
+	line-height: 1;
+	font-size: 1rem;
+	letter-spacing: 0.125em;
+	font-style: normal;
+	color: #DBE8D4;
+	font-family: "Josefin Sans",monospace;
+	text-align: center;
+	transform: rotate(180deg);
+	margin-top: calc(1rem + 5vw);
+ }
+ 
+.copyright b {
+	font-size: 1.2rem;
+	color: #73cca8;
+}
+
+h2 {
+	text-align: center;
+	color: #DBE8D4;
+	font-weight: 700;
+	font-size: 2rem;
+	font-family: "Josefin Sans",monospace;
+	position: relative;
+}
+
+h2:after {
+	position: absolute;
+	content: '';
+	height: 5px;
+	/* adjust this to move up and down. you may have to adjust the line height of the paragraph if you move it down a lot. */
+	bottom: -10px; 
+
+	/****** 
+	optional values below 
+	******/
+
+	/* center - (optional) use with adjusting width   */
+	margin: 0 auto;
+	left: 0;
+	right: 0;
+
+	width: 5rem;
+	background: #73cca8;
+
+	/* optional animation */
+	-o-transition:.5s;
+	-ms-transition:.5s;
+	-moz-transition:.5s;
+	-webkit-transition:.5s;
+	transition:.5s;
+}
+ 
+
+ /* optional hover classes used with anmiation */
+h2:hover:after {
+	bottom: -5px;
+	height: 3px;
+	width: 9rem;
+	background: #73cca8;
+}
+
+.creation_li {
+	display: flex;
+	flex-direction: column;
+    align-items: flex-start;
+	justify-content: center;
+	width: min(720px, calc(100vw - 3rem));
+	background-color: #353c4e;
+	padding: 10px;
+	margin-bottom: 1rem;
+	border-radius: 10px;
+}
+.creation_li name {
+	font-weight: 500;
+	line-height: 1;
+	font-size: 1.5rem;
+	letter-spacing: 0.01em;
+	font-style: normal;
+	color: #DBE8D4;
+	font-family: "Josefin Sans",monospace;
+}
+.creation_li description {
+	font-weight: 100;
+	line-height: 1;
+	font-size: 1rem;
+	font-style: normal;
+	color: #a5b39b;
+	font-family: Titillium web, sans-serif;
+}
+</style>
 </head>
-<body>
-  <h1>Site Under Construction</h1>
-  <h2>Visit later</h2>
-  <a href='https://github.com/KaustubhRakhade/kaustubhrakhade.github.io'>Github Repo</a>
+<body class="bg">
+	<div class="navbar">
+		<div class="nav-button" id="Home-button" onclick="document.getElementById('Home').scrollIntoView({ behavior: 'smooth', block: 'center' });">Home</div>
+		<div class="nav-button" id="Creations-button" onclick="document.getElementById('Creations').scrollIntoView({ behavior: 'smooth', block: 'center' });">Creations</div>
+		<div class="nav-button" id="About-button" onclick="document.getElementById('About').scrollIntoView({ behavior: 'smooth', block: 'center' });">About</div>
+	</div>
+	<div id="ring1">
+		<div id="ring2">
+			<div id="main-title">
+				<div id="title-name">Kosty<b>R13</b></div>
+				<div id="subtitle"><font color="#fb4cde">while</font> (<font color="#22f95a"><i>true</i></font>) { <font color="#4dc4fb">smile;</font> }</div>
+				<div id="Home"></div>
+			</div>
+		</div>
+	</div>
+	<div class="textholder">
+		<div class="text">
+		Welcome to my website.<br>I'm a high school student who does coding just for fun.
+		</div>
+	</div>
+	<br>
+	<br>
+	<div class="wrapper" id="Creations">
+		<h2>Creations</h2>
+	</div>
+	<div class="textholder">
+	<div class="creation_ul">
+		<div class="creation_li">
+			<name>X4Y Startup Generator</name>
+			<description>X for Y startup ideas are great! So why not come up with your own?</description>
+		</div>
+		<div class="creation_li">2
+		</div>
+		<div class="creation_li">3
+		</div>
+	</div>
+	</div>
+	<br>
+	<br>
+	<div class="wrapper" id="About">
+		<h2>About Me</h2>
+	</div>
+	<div class="textholder">
+		<div class="text">
+			I started with <b>Command Prompt</b> as my first programming language, <i>lol</i>.
+			Then I drifted to a more "proper" programming language - <b>Python</b>.
+			I was completely self-taught as our school had no plans on teaching coding anytime in the next 10 years. 
+			Then I moved to <b>Android App Development</b> and created some useless Apps mostly for fun.
+			At pretty much the same time, I bought an <i>Arduino</i> and had to learn it's <i>"C"ish</i> language.<br><br>
+			But in past few months, I got keenly interested in <b>Web Development</b>.
+			I learned <b>HTML</b>, <b>CSS</b> and <b>Vanilla Javascript</b> and started creating my own <i>Web Apps</i>.
+			At this point, Javascript has surpassed Python as my favourite programming language
+			<i>(I do keep geting JS hangovers and keep breaking my head over why <font color="#ff4949"><b>'list' object has no attribute 'length'</b></font> )</i>.<br><br>
+			I make Web Apps mostly to explore the languages and I'm still in the process.
+			Maybe once I get to college, that I'd be able to dedicate more time to coding.
+			And that's pretty much the story. Thank you for your patience to read on till here and find nothing interesting.
+		</div>
+	</div>
+
+	<div id="bottom-bar1">
+		<div id="bottom-bar2">
+			<div id="bottom-bar3">
+
+				<div class="back2top" onclick="document.getElementById('Home').scrollIntoView({ behavior: 'smooth', block: 'center' });">BACK TO TOP</div>
+
+				<div class="round" onclick="document.getElementById('Home').scrollIntoView({ behavior: 'smooth', block: 'center' });">
+					<div id="cta">
+						<span class="arrow primera next "></span>
+						<span class="arrow segunda next "></span>
+					</div>
+
+				</div>
+				<div class="copyright"><b>&#169</b> Kaustubh Rakhade, 2021</div>
+				<div class="social">
+					<!-- Add font awesome icons -->
+					<div style="font-size: 50px;">
+						<a title="GitHub" rel="me" target="_blank" href="https://github.com/kaustubhrakhade/" class="fa fa-github"></a>
+					</div>
+					<div style="font-size: 30px;">
+						<a title="Twitter" rel="me" target="_blank" href="https://twitter.com/KostyR13" class="fa fa-twitter"></a>
+					</div>
+					<div style="font-size: 24px;">
+						<a title="Email" rel="me" target="_blank" href="mailto:kaustubhrakhade@gmail.com" class="fa fa-envelope"></a>
+					</div>
+					<div style="font-size: 26px;">
+						<a title="YouTube" rel="me" target="_blank" href="https://www.youtube.com/channel/UCvYVMJgflFxqD4RPEzpoKWg" class="fa fa-youtube-play"></a>
+					</div>
+					</div>
+			</div>
+		</div>
+	</div>
+
+<script>
+var frame =  65;
+var keys = ['_', 'w_', 'wh_', 'whi_', 'whil_', '<font color="#fb4cde">while</font>_', '<font color="#fb4cde">while</font> _', '<font color="#fb4cde">while</font> (_', '<font color="#fb4cde">while</font> (t_', '<font color="#fb4cde">while</font> (tr_', '<font color="#fb4cde">while</font> (tru_', '<font color="#fb4cde">while</font> (<font color="#22f95a"><i>true</i></font>_', '<font color="#fb4cde">while</font> (<font color="#22f95a"><i>true</i></font>)_', '<font color="#fb4cde">while</font> (<font color="#22f95a"><i>true</i></font>) _', '<font color="#fb4cde">while</font> (<font color="#22f95a"><i>true</i></font>) {_', '<font color="#fb4cde">while</font> (<font color="#22f95a"><i>true</i></font>) { _','<font color="#fb4cde">while</font> (<font color="#22f95a"><i>true</i></font>) { <font color="#4dc4fb">s</font>_', '<font color="#fb4cde">while</font> (<font color="#22f95a"><i>true</i></font>) { <font color="#4dc4fb">sm</font>_', '<font color="#fb4cde">while</font> (<font color="#22f95a"><i>true</i></font>) { <font color="#4dc4fb">smi</font>_', '<font color="#fb4cde">while</font> (<font color="#22f95a"><i>true</i></font>) { <font color="#4dc4fb">smil</font>_', '<font color="#fb4cde">while</font> (<font color="#22f95a"><i>true</i></font>) { <font color="#4dc4fb">smile</font>_', '<font color="#fb4cde">while</font> (<font color="#22f95a"><i>true</i></font>) { <font color="#4dc4fb">smile;</font>_', '<font color="#fb4cde">while</font> (<font color="#22f95a"><i>true</i></font>) { <font color="#4dc4fb">smile;</font> _', '<font color="#fb4cde">while</font> (<font color="#22f95a"><i>true</i></font>) { <font color="#4dc4fb">smile;</font> }_']
+var blink = ['<font color="#fb4cde">while</font> (<font color="#22f95a"><i>true</i></font>) { <font color="#4dc4fb">smile;</font> }_', '<font color="#fb4cde">while</font> (<font color="#22f95a"><i>true</i></font>) { <font color="#4dc4fb">smile;</font> }&nbsp&nbsp']
+var emptyblink = ['&nbsp', '_']
+function play() {
+	var loopIndex = frame % 83;
+	if (loopIndex < 24) { document.getElementById("subtitle").innerHTML = keys[loopIndex]; }
+	else if (loopIndex > 45 && loopIndex < 70) { document.getElementById("subtitle").innerHTML = keys[69 - loopIndex]; }
+	else if (loopIndex >= 70) { document.getElementById("subtitle").innerHTML = emptyblink[Math.floor(loopIndex / 4) % 2]; }
+	else { document.getElementById("subtitle").innerHTML = blink[Math.floor(loopIndex / 4) % 2]; }
+	frame = frame + 1;
+}
+
+setInterval(play, 150);
+
+function addClass(element, name) {
+	var arr = element.className.split(" ");
+	if (arr.indexOf(name) == -1) {
+		element.className += " " + name;
+	}
+}
+
+function isInViewport(el) {
+	var top = el.offsetTop;
+	var left = el.offsetLeft;
+	var width = el.offsetWidth;
+	var height = el.offsetHeight;
+
+	while(el.offsetParent) {
+		el = el.offsetParent;
+		top += el.offsetTop;
+		left += el.offsetLeft;
+	}
+
+	return (
+		top >= window.pageYOffset &&
+		left >= window.pageXOffset &&
+		(top + height) <= (window.pageYOffset + window.innerHeight) &&
+		(left + width) <= (window.pageXOffset + window.innerWidth)
+	);
+}
+
+function checkNav(){
+	if (isInViewport(document.getElementById("Home"))) {
+		addClass(document.getElementById("Home-button"), "current");
+		document.getElementById("Creations-button").classList.remove("current");
+		document.getElementById("About-button").classList.remove("current");
+	}
+	else if (isInViewport(document.getElementById("Creations"))) {
+		document.getElementById("Home-button").classList.remove("current");
+		addClass(document.getElementById("Creations-button"), "current");
+		document.getElementById("About-button").classList.remove("current");
+	}
+	else if (isInViewport(document.getElementById("About"))) {
+		document.getElementById("Home-button").classList.remove("current");
+		document.getElementById("Creations-button").classList.remove("current");
+		addClass(document.getElementById("About-button"), "current");
+	}
+};
+
+setInterval(checkNav, 50);
+</script>
 </body>
 </html>
