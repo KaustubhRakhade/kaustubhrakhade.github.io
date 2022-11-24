@@ -1,0 +1,43 @@
+
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sample App By Kosty</title>
+</head>
+
+<body>
+ <h3>Test App</h3> 
+  <video id="myVideo" width="100%" preload autoplay loop muted></video>
+  <canvas id="c"></canvas>
+  <script>
+video = document.getElementById('myVideo')
+canvas = document.getElementById('c')
+ctx = canvas.getContext('2d');
+navigator.mediaDevices
+    .getUserMedia({
+    video: {facingMode: ['user','environment']},
+    audio: false
+  })
+.then(stream => {
+    track = stream.getVideoTracks()[0];
+    currentStream = stream;
+    video.srcObject = stream;
+    return navigator.mediaDevices.enumerateDevices();
+});
+
+
+function draw(time) {
+    canvas.width = parseInt(getComputedStyle(video).getPropertyValue("width"));
+    canvas.height = parseInt(getComputedStyle(video).getPropertyValue("height"));
+    ctx.drawImage(video, 0, 0);
+    window.requestAnimationFrame(draw);
+}
+window.requestAnimationFrame(draw);
+
+
+  </script>
+</body>
+</html>
