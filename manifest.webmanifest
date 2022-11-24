@@ -1,5 +1,5 @@
 {
-  "background_color": "#db3fd5",
+  "background_color": "#ffffff",
   "description": "Sample app for People I know",
   "dir": "ltr",
   "display": "standalone",
@@ -8,7 +8,7 @@
   "scope": "/",
   "short_name": "PIK 0.05",
   "start_url": "/PIK_app/sampleapp.html",
-  "theme_color": "#ffffff",
+  "theme_color": "#ff4444",
   "categories": [],
   "screenshots": [],
   "icons": [
