@@ -1,0 +1,38 @@
+{
+  "background_color": "#db3fd5",
+  "description": "Sample app for People I know",
+  "dir": "ltr",
+  "display": "standalone",
+  "name": "PeopleIKnow 0.0",
+  "orientation": "any",
+  "scope": "/",
+  "short_name": "PIK 0.04",
+  "start_url": "/PeopleIKnow/android_app/sampleapp.html",
+  "theme_color": "#df5370",
+  "categories": [],
+  "screenshots": [],
+  "icons": [
+    {
+        "src": "/icon-192x192.png",
+        "sizes": "192x192",
+        "type": "image/png"
+    },
+    {
+        "src": "/icon-256x256.png",
+        "sizes": "256x256",
+        "type": "image/png"
+    },
+    {
+        "src": "/icon-384x384.png",
+        "sizes": "384x384",
+        "type": "image/png"
+    },
+    {
+        "src": "/icon-512x512.png",
+        "sizes": "512x512",
+        "type": "image/png"
+    }
+],
+  "shortcuts": [],
+  "lang": "en"
+}
