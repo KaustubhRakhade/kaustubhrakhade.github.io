@@ -6,15 +6,74 @@
   <link rel="manifest" href="/manifest.webmanifest">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sample App By Kosty</title>
-</head>
+  <script src="compressor.min.js"></script>
 
+</head>
+<style>
+
+video {
+  max-height: 100vh;
+  max-width: 100vw;
+}
+html {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+#bottom_bar {
+  position: fixed;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  width: 100%;
+  padding: 0.5rem;
+  align-items: center;
+}
+ 
+#bottom_bar span {
+  margin: 0.5rem;
+  background: #f28e7f;
+  color: #6c119c;
+  font-weight: bold;
+  border: none;
+  border-radius: 2rem;
+  padding: 0.5rem 1rem;
+}
+
+
+canvas {
+  display: none;
+}
+</style>
 <body>
- <h3>Test App</h3> 
   <video id="myVideo" width="100%" preload autoplay loop muted></video>
   <canvas id="c"></canvas>
+
+<div id="bottom_bar">
+  <span>Tap anywhere to capture & then wait...</span> 
+</div>
+
   <script>
 video = document.getElementById('myVideo')
 canvas = document.getElementById('c')
+
+video.addEventListener( "loadedmetadata", function (e) {
+  canvas.width = this.videoWidth,
+  canvas.height = this.videoHeight;
+  console.log(this.videoWidth, this.videoHeight)
+})
+
 ctx = canvas.getContext('2d');
 navigator.mediaDevices
     .getUserMedia({
@@ -23,6 +82,7 @@ navigator.mediaDevices
   })
 .then(stream => {
     track = stream.getVideoTracks()[0];
+    imageCapture = new ImageCapture(track);
     currentStream = stream;
     video.srcObject = stream;
     return navigator.mediaDevices.enumerateDevices();
@@ -30,14 +90,87 @@ navigator.mediaDevices
 
 
 function draw(time) {
-    canvas.width = parseInt(getComputedStyle(video).getPropertyValue("width"));
-    canvas.height = parseInt(getComputedStyle(video).getPropertyValue("height"));
-    ctx.drawImage(video, 0, 0);
+    // canvas.width = parseInt(getComputedStyle(video).getPropertyValue("width"));
+    // canvas.height = parseInt(getComputedStyle(video).getPropertyValue("height"));
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
     window.requestAnimationFrame(draw);
 }
-window.requestAnimationFrame(draw);
+// window.requestAnimationFrame(draw);
 
 
+function uploadImage(imageBlob) {
+  let req = new XMLHttpRequest();
+  let formData = new FormData();
+
+  req.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+       // Typical action to be performed when the document is ready:
+       console.log(req.responseText);
+       alert(req.responseText);
+    }
+};
+
+  var image = new File([imageBlob], Date.now() + ".jpeg");
+  formData.append('file', image);
+  server = "https://4f3d-203-110-242-33.ngrok.io/";
+  // server = "http://localhost/";
+  req.open("POST", server + 'PeopleIKnow/newpost.php');
+
+  req.send(formData);
+}
+
+let imageCapture;
+
+function onTakePhotoButtonClick() {
+  imageCapture.getPhotoCapabilities()
+  .then((img_cap) => {
+    // alert( img_cap.imageWidth.max)
+    imageCapture.takePhoto(imageSettings = {imageWidth: Math.min(1440, img_cap.imageWidth.max)})
+    .then((blob) => {
+
+      // link.href = URL.createObjectURL(blob);
+      console.log(blob);
+      // alert("WORKING");
+      const file = new File([blob], 'dot.png', blob)
+      console.log(file)
+
+      if (!file) { return; }
+
+      new Compressor(file, {
+        quality: 0.6,
+        // width: canvas.width > 1080 ? 1080 : canvas.width,
+
+        // The compression process is asynchronous,
+        // which means you have to access the `result` in the `success` hook function.
+        success(result) { uploadImage(result) },
+        error(err) {
+          console.log(err.message);
+          alert(err.message);
+        },
+      });
+    }) 
+    })
+
+  .catch((error) => console.error(error));
+}
+
+/* Utils */
+
+
+
+
+
+
+
+function capture() {
+  // alert("WORKING");
+  onTakePhotoButtonClick()
+  // ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+}
+
+window.addEventListener("click", capture)
+// alert("WORKING123");
   </script>
 </body>
 </html>
