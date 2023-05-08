@@ -1,23 +1,26 @@
 body {
     margin: 0;
     font-family: sans-serif;
+    background: #444;
+
+    /* to prevent selecting anything */
     -moz-user-select: none;
     -webkit-user-select: none;
     user-select: none;
-    background: #444;
 }
 
 #navbar {
-    display: flex;
-    flex-direction: row;align-items: center;
-    justify-content: space-between;
-    height: 4rem;
-    width: 100%;
-    background: #1a1a1e;
-    z-index: 150;
     position: fixed;
     top: 0;
     left: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    height: 4rem;
+    width: 100%;
+    z-index: 150;
+    background: #1a1a1e;
 }
 
 #logobox {
@@ -40,6 +43,14 @@ body {
 #logobox img {
     height: 2rem;
     margin: 0 0.75rem 0 1.25rem;
+}
+
+#logobig   { display: block; }
+#logosmall { display: none;  }
+
+@media only screen and (max-width: 360px) {
+    #logobig   { display: none;  }
+    #logosmall { display: block; }
 }
 
 #navBTNs {
@@ -76,7 +87,6 @@ body {
     margin-top: 5rem;
     justify-content: center;
     min-height: calc(100vh - 14.5rem);
-
 }
 
 .imgBox {
@@ -89,45 +99,6 @@ body {
     border-radius: 0.25rem;
 }
 
-.imgBox input[type=button] {
-    position: absolute;
-    bottom: 0.5rem;
-    background-color: #ddda;
-    border: none;
-    opacity: 0;
-    transform: scale(0.5);
-    width: 2.25rem;
-    height: 2rem;
-    text-align: center;
-    transition: all 0.1s;
-    border-radius: 0.25rem;
-    transform-origin: top left;
-}
-
-.imgBox input[type=button]:hover {
-    background-color: #dddd;
-}
-
-.imgBox img {
-    width: clamp(6em, calc((100vw - 2.25rem) / 3), 13.2rem);
-    aspect-ratio: 1;
-    object-fit: contain;
-    /* height: clamp(6em, calc((100vw - 2.25rem) / 3), 13.2rem); */
-    font-size: clamp(0.7rem, 3vw ,1rem);
-    line-height: clamp(6em, calc((100vw - 2.25rem) / 3), 13.2rem);
-    color: #bbb;
-    text-align: center;
-    display: block;
-}
-
-.downloadBTN {
-    right: 0.5rem;
-}
-
-.imgBox .infoBTN {
-    right: 3.25rem;
-}
-
 .imgBox:hover {
     transition: all .2s;
     transform: scale(1.08);
@@ -135,6 +106,40 @@ body {
     box-shadow: 0 0 4rem #0007;
     z-index: 50;
 }
+
+.imgBox input[type=button] {
+    position: absolute;
+    bottom: 0.5rem;
+    background-color: #ddda;
+    border: none;
+    opacity: 0;
+    transform: scale(0.5);
+    transform-origin: top left;
+    width: 2.25rem;
+    height: 2rem;
+    text-align: center;
+    transition: all 0.1s;
+    border-radius: 0.25rem;
+}
+
+.imgBox input[type=button]:hover {
+    background-color: #dddd;
+}
+
+.imgBox img {
+    width: clamp(6rem, calc((100vw - 2.25rem) / 3), 13.2rem);
+    aspect-ratio: 1;
+    object-fit: contain;
+    /* height: clamp(6em, calc((100vw - 2.25rem) / 3), 13.2rem); */
+    font-size: clamp(0.7rem, 3vw ,1rem);
+    line-height: clamp(6rem, calc((100vw - 2.25rem) / 3), 13.2rem);
+    color: #bbb;
+    text-align: center;
+    display: block;
+}
+
+.downloadBTN { right: 0.5rem;  }
+.infoBTN     { right: 3.25rem; }
 
 .imgBox:hover input[type=button] {
     opacity: 1;
@@ -151,6 +156,31 @@ body {
     left: 0;
     z-index: 100;
     flex-direction: column;
+}
+
+#imgViewer input[type=button] {
+    font-size: 3rem;
+    color: #bbb;
+    height: 3rem;
+    width: 3.5rem;
+    border: none;
+    background: #0000;
+    text-shadow: 0 0 1rem #000f, 0 0 2rem #444f, 0 0 0.5rem #444f;
+    z-index: 250;
+}
+
+#imgViewer input[type=button]:hover {
+    color: #ddd;
+}
+
+#imgViewer input[type=button]:active,
+#imgViewer input[type=button].active {
+    transform: scale(0.9);
+    color: #999;
+}
+
+#stop_btn {
+    display: none;
 }
 
 #imgViewBox {
@@ -183,49 +213,22 @@ body {
     width: calc(100vw - 7rem);
 }
 
-#imgSlider img:first-child {
-    margin-left: 50vw;
-}
-
-#imgSlider img:last-child {
-    margin-right: 50vw;
-}
-
-#imgViewer input[type=button] {
-    font-size: 3rem;
-    color: #bbb;
-    height: 3rem;
-    width: 3.5rem;
-    border: none;
-    background: #0000;
-    text-shadow: 0 0 1rem #000f, 0 0 2rem #444f, 0 0 0.5rem #444f;
-    z-index: 250;
-}
-
-#imgViewer input[type=button]:hover {
-    color: #ddd;
-}
-
-#imgViewer input[type=button]:active, #imgViewer input[type=button].active {
-    transform: scale(0.9);
-    color: #999;
-}
-
-#stop_btn {
-    display: none;
-}
-
 /* Hide scrollbar for Chrome, Safari and Opera */
-#imgSlider::-webkit-scrollbar, body::-webkit-scrollbar {
+#imgSlider::-webkit-scrollbar,
+body::-webkit-scrollbar {
     display: none;
 }
   
 /* Hide scrollbar for IE, Edge and Firefox */
-#imgSlider, body {
+#imgSlider,
+body {
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
     scroll-behavior: smooth;
 }
+
+#imgSlider img:first-child { margin-left: 50vw;  }
+#imgSlider img:last-child  { margin-right: 50vw; }
 
 #imgSlider img {
     min-width: 4rem;
@@ -267,11 +270,3 @@ body {
 #footer span b {
     color: #ec008c;
 }
-
-#logobig { display: block; }
-#logosmall { display: none; }
-
-@media only screen and (max-width: 360px) {
-    #logobig { display: none; }
-    #logosmall { display: block; }
-  }
