@@ -612,6 +612,7 @@ h6 {
     font-family: var(--font-sans);
     transition: all 0.25s;
     padding: 0;
+    color: var(--text-color);
   }
   
   #searchINP::placeholder {
