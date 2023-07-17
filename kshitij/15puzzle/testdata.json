@@ -1,0 +1,38 @@
+[
+    {
+        "time": 90,
+        "moves": 81,
+        "rows": 4,
+        "columns": 4
+    },
+    {
+        "time": 90,
+        "moves": 81,
+        "rows": 4,
+        "columns": 3
+    },
+    {
+        "time": 90,
+        "moves": 81,
+        "rows": 2,
+        "columns": 6
+    },
+    {
+        "time": 90,
+        "moves": 81,
+        "rows": 9,
+        "columns": 2
+    },
+    {
+        "time": 90,
+        "moves": 81,
+        "rows": 4,
+        "columns": 5
+    },
+    {
+        "time": 90,
+        "moves": 81,
+        "rows": 9,
+        "columns": 2
+    }
+]

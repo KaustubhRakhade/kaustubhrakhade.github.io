@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>15 Puzzle</title>
+    <meta property="og:title" content="15puzzle">
+    <meta property="og:site_name" content="15puzzle">
+    <meta property="og:description" content="Play the classic 15puzzle or challenge yourself!">
+    <meta property="og:image" content="assets/banner.jpg">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="shortcut icon" href="assets/logo.jpg" type="image/x-icon">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+</head>
+<body>
+
+    <div id="main">
+
+        <div id="navtabs">
+            <input type="radio" name="tab" id="tab_1">
+            <input type="radio" name="tab" id="tab_2">
+            <input type="radio" name="tab" id="tab_3">
+    
+            <div id="active-tab"></div>
+    
+            <label for="tab_1" onclick="navigate(1)">Play</label>
+            <div class="separator"></div>
+            <label for="tab_2" onclick="navigate(2)">Leaderboard</label>
+            <div class="separator"></div>
+            <label for="tab_3" onclick="navigate(3)">Settings</label>
+        </div>
+
+        <div class="page">
+            <div id="board-container">
+                <div id="board"></div>
+                <div id="shareBtn" onclick="shareRes()">
+                    <span class="material-symbols-outlined">ios_share</span>
+                    <span>Share</span>
+                </div>
+            </div>
+
+            <div id="tracker">
+                <span id="move-track">Moves: <b>0</b></span>
+                <input type="button" id="newGameBtn" onclick="newGame()" value="SHUFFLE">
+                <span id="time-track">Time: <b>0s</b></span>
+            </div>
+        </div>
+        
+        <div class="page" style="display: none;">
+
+            <div id="filters">
+
+                <div id="sort-filter">
+                    <span>Sort by :</span>
+                    <div id="choose-menu" >
+                        <input type="radio" checked name="sort-by" id="by-time">
+                        <input type="radio" name="sort-by" id="by-moves">
+                        <label for="by-time">Time</label>
+                        <label for="by-moves">Moves</label>
+                    </div>
+                </div>
+
+
+                <div id="size-filter">
+                    <span>Size :</span>
+                    <button id="pull-down-btn">
+                        <span>---</span>
+                        <span class="material-symbols-outlined">unfold_more</span>
+                    </button>
+                    <div id="menu">
+                        <!-- <span class="menu-item" value="3x3">1 by 1</span> -->
+                    </div>
+                </div>
+
+            </div>
+
+            <div id="leaderboard">
+                <div id="list-head">
+                    <span class="material-symbols-outlined">numbers</span>
+                    <span id="score-type">Score</span>
+                    <span id="score-size">Size</span>
+                </div>
+                <span id="empty-scores">Your scores would show up here</span>
+                <div id="list-items">
+
+                    <!-- <div class="list-item">
+                        <span class="score-rank">1</span>
+                        <span class="score-info"><b>44s</b><i>13 moves</i></span>
+                        <span class="score-size">4 × 4</span>
+                    </div> -->
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="page" style="display: none;">
+
+            <div class="setting" id="size-select">
+                <span><b>Puzzle Size</b><br>Specify rows & columns</span>
+                <div id="size-input">
+
+                    <input type="number" id="numRows" max="7" min="2" value="4" placeholder="4"
+                        onblur="handleSizeInput(this)"
+                        oninput="handleSizeInput(this)"
+                        onclick="this.select()">
+
+                    <span>×</span>
+
+                    <input type="number" id="numCols" max="7" min="2" value="4" placeholder="4"
+                        onblur="handleSizeInput(this)"  
+                        oninput="handleSizeInput(this)"
+                        onclick="this.select()">
+
+                </div>
+            </div>
+
+            <div class="setting" id="image-select">
+                <span><b>Choose Tile Art</b><br>Or upload your own</span>
+                <div id="choose-image">
+                    <img
+                        src="assets/white.jpg"
+                        class="active"
+                        showImage="false"
+                        aspectRatio="1"
+                        textColor="#007AFF"
+                        shadowColor="#FFFFFF"
+                        onclick="setTileArt(this)">
+
+                    <img
+                        src="assets/IIT-KGP.jpg"
+                        showImage="true"
+                        aspectRatio="1"
+                        textColor="#FFFFFF"
+                        shadowColor="#000000"
+                        onclick="setTileArt(this)">
+                    
+                    <div id="custom-image">
+                        <input type="file" name="" id="image-picker" accept="image/*" oninput="setTileArt(this)">
+                        <label for="image-picker" class="material-symbols-outlined">add_photo_alternate</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="setting" id="challenge-select">
+                <span><b>Challenge Mode</b><br>For Pro Gamers</span>
+                <div id="challenge-choose">
+                    <input type="checkbox" name="" id="freeze-challenge">
+                    <input type="checkbox" name="" id="blind-challenge">
+                    <label for="freeze-challenge">
+                        <span class="material-symbols-outlined">check</span>
+                        <span>Freeze Mode</span>
+                    </label>
+                    <label for="blind-challenge">
+                        <span class="material-symbols-outlined">check</span>
+                        <span>Blind Mode</span>
+                    </label>
+                </div>
+            </div>
+
+            <span id="warning">
+                Custom Images with high resolution can causes<br>
+                performance issues on lower-end devices
+            </span>
+        </div>
+    </div>
+
+    <video src="assets/confetti.mp4"></video>
+    <script src="app.js"></script>
+</body>
+</html>
